@@ -1,10 +1,12 @@
 import React from "react";
-import SignIn from "./components/SignIn";
+// import SignIn from "./components/SignIn";
+import Home from "./views/Home";
 
 function App() {
   return (
     <div>
-      <SignIn />
+      {/* <SignIn /> */}
+      <Home />
     </div>
   );
 }
