@@ -41,6 +41,8 @@ export default function SignIn() {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [role, setRole] = useState<string>("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -97,6 +99,7 @@ export default function SignIn() {
         setAccounts({
           email,
           password,
+          role: role,
         })
       );
       navigate("/home");

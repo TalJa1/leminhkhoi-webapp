@@ -2,7 +2,7 @@ import axiosClient from "../axiosClient";
 
 const userAPI = {
   getUsers: async () => {
-    const url = "/todos/1";
+    const url = "/users";
     return await axiosClient.get(url);
   },
 };
