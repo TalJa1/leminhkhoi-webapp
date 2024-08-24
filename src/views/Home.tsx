@@ -20,6 +20,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import { mainListItems } from "../components/listItem";
 import { useSelector } from "react-redux";
 import { HomeMain } from "../components/home/HomeMain";
+import { Account } from "../services/typeProps";
 
 function Copyright(props: any) {
   return (
@@ -97,7 +98,7 @@ export default function Home() {
   const toggleDrawer = () => {
     setOpen(!open);
   };
-  const user = useSelector((state: any) => state.account.accounts);
+  const user: Account = useSelector((state: any) => state.account.accounts);
 
   console.log("user", user);
 
@@ -132,11 +133,14 @@ export default function Home() {
             >
               Dashboard
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
+            <Box>
+              {user.email}
+              <IconButton color="inherit">
+                <Badge badgeContent={4} color="secondary">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+            </Box>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>

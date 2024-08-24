@@ -94,12 +94,10 @@ export default function SignIn() {
 
     if (isEmailValid && isPasswordValid) {
       dispatch(
-        setAccounts([
-          {
-            email,
-            password,
-          },
-        ])
+        setAccounts({
+          email,
+          password,
+        })
       );
       navigate("/home");
     }

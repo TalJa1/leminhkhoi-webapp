@@ -1,15 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Account, AccountState } from "../services/typeProps";
+import { Account } from "../services/typeProps";
 
-const initialState: AccountState = {
-  accounts: [],
+const initialState = {
+  accounts: {},
 };
 
 export const accountReducer = createSlice({
   name: "account",
   initialState,
   reducers: {
-    setAccounts: (state, action: PayloadAction<Account[]>) => {
+    setAccounts: (state, action: PayloadAction<Account>) => {
       state.accounts = action.payload;
     },
   },
