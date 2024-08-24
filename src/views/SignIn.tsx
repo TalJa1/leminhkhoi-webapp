@@ -42,7 +42,7 @@ export default function SignIn() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [role, setRole] = useState<string>("");
+  const [role, setRole] = useState<string>("doctor");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
