@@ -1,13 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface Account {
-  email: string;
-  password: string;
-}
-
-interface AccountState {
-  accounts: Account[];
-}
+import { Account, AccountState } from "../services/typeProps";
 
 const initialState: AccountState = {
   accounts: [],
