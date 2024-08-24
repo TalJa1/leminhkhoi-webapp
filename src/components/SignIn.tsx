@@ -90,7 +90,7 @@ export default function SignIn() {
     }
 
     if (isEmailValid && isPasswordValid) {
-      navigate("home");
+      navigate("/home");
     }
   };
 
