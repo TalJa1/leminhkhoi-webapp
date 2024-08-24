@@ -19,8 +19,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { mainListItems } from "../components/listItem";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
-import userAPI from "../apis/userAPI";
+import { HomeMain } from "../components/home/HomeMain";
 
 function Copyright(props: any) {
   return (
@@ -101,12 +100,6 @@ export default function Home() {
   const user = useSelector((state: any) => state.account.accounts);
 
   console.log("user", user);
-
-  useEffect(() => {
-    userAPI.getUsers().then((res) => {
-      console.log("res", res);
-    });
-  }, []);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -189,7 +182,7 @@ export default function Home() {
                     height: 240,
                   }}
                 >
-                  {/* main data */}
+                  <HomeMain />
                 </Paper>
               </Grid>
               <Grid item xs={12} md={4} lg={3}>
