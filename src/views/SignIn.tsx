@@ -105,7 +105,7 @@ export default function SignIn() {
           md={7}
           sx={{
             backgroundImage:
-              'url("/static/images/templates/templates-images/sign-in-side-bg.png")',
+              'url("https://th.bing.com/th/id/R.c734d16472409df22ecfca97d99d6691?rik=GkINbMARksKu7w&riu=http%3a%2f%2fwww.pixelstalk.net%2fwp-content%2fuploads%2f2016%2f08%2fDesktop-Best-And-Website-background-2560x1600.jpg&ehk=PRvGxoU3%2f8bAVsH7JxbdDMfS8ui%2byLZy1wPVmNY2Rzs%3d&risl=&pid=ImgRaw&r=0")',
 
             backgroundColor: (t) =>
               t.palette.mode === "light"
