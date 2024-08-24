@@ -18,6 +18,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { mainListItems } from "../components/listItem";
+import { useSelector } from "react-redux";
 
 function Copyright(props: any) {
   return (
@@ -95,6 +96,9 @@ export default function Home() {
   const toggleDrawer = () => {
     setOpen(!open);
   };
+  const user = useSelector((state: any) => state.account.accounts);
+
+  console.log("user", user);
 
   return (
     <ThemeProvider theme={defaultTheme}>
