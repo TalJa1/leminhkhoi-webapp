@@ -12,6 +12,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Copyright(props: any) {
   return (
@@ -38,6 +39,7 @@ export default function SignIn() {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const navigate = useNavigate();
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -88,10 +90,7 @@ export default function SignIn() {
     }
 
     if (isEmailValid && isPasswordValid) {
-      console.log({
-        email,
-        password,
-      });
+      navigate("home");
     }
   };
 
