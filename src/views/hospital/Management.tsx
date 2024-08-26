@@ -2,11 +2,10 @@ import React from "react";
 import { Box } from "@mui/material";
 import MainLayout from "../../components/MainLayout";
 import { Account } from "../../services/typeProps";
-import { useSelector } from "react-redux";
 import DoctorManagementComponent from "../../components/hospital/DoctorManagementComponent";
 
 const Management = () => {
-  const user: Account = useSelector((state: any) => state.account.accounts);
+  const user: Account = JSON.parse(sessionStorage.getItem("userData") ?? "");
 
   return (
     <Box>

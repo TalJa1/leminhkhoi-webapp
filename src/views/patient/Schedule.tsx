@@ -2,10 +2,9 @@ import { Box } from "@mui/material";
 import React from "react";
 import MainLayout from "../../components/MainLayout";
 import { Account } from "../../services/typeProps";
-import { useSelector } from "react-redux";
 
 const Schedule = () => {
-  const user: Account = useSelector((state: any) => state.account.accounts);
+  const user: Account = JSON.parse(sessionStorage.getItem("userData") ?? "");
 
   return (
     <Box>

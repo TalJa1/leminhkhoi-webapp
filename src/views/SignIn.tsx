@@ -13,8 +13,6 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setAccounts } from "../redux/accountRedux";
 import { userAccounts } from "../data/appData";
 
 function Copyright(props: any) {
@@ -43,7 +41,6 @@ export default function SignIn() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -99,21 +96,21 @@ export default function SignIn() {
         (account) => account.email === email && account.password === password
       );
 
-      console.log("account", account);
-
       if (!account) {
         setEmailError("Invalid email or password");
         setPasswordError("Invalid email or password");
         return;
       }
 
-      dispatch(
-        setAccounts({
+      sessionStorage.setItem(
+        "userData",
+        JSON.stringify({
           email,
           password,
           role: account.role,
         })
       );
+
       navigate("/home");
     }
   };

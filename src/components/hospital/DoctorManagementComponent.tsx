@@ -30,6 +30,7 @@ import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
+import { DateTimeField } from "@mui/x-date-pickers";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -181,33 +182,51 @@ const DoctorManagementComponent = () => {
           </Grid>
           <Divider />
           <Grid container sx={{ padding: "1rem" }}>
-            <Grid item container xs={12} md={8} lg={8}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DemoContainer components={["DateCalendar", "DateCalendar"]}>
-                  <DemoItem label={`Schedule for ${userDialog.name}`}>
-                    <DateCalendar
-                      value={dayjs(userDialog.schedule.date)}
-                      defaultValue={dayjs()}
-                      readOnly
-                    />
-                  </DemoItem>
-                </DemoContainer>
-              </LocalizationProvider>
+            <Grid item container xs={12} md={6} lg={6}>
+              <Grid item xs={12} md={12} lg={8}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DemoContainer components={["DateCalendar", "DateCalendar"]}>
+                    <DemoItem label={`Schedule for ${userDialog.name}`}>
+                      <DateCalendar
+                        value={dayjs(userDialog.schedule.date)}
+                        defaultValue={dayjs()}
+                        readOnly
+                      />
+                      <DateTimeField
+                        readOnly
+                        defaultValue={dayjs(
+                          `${userDialog.schedule.date}T${userDialog.schedule.time}`
+                        )}
+                        format="DD/MM/YYYY hh:mm a"
+                      />
+                    </DemoItem>
+                  </DemoContainer>
+                </LocalizationProvider>
+              </Grid>
+              <Grid item container xs={12} md={12} lg={4}>
+                <Grid item xs={4}>
+                  <ListItemText
+                    primary="Filter ID"
+                    secondary={userDialog.filterInfo.id}
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <ListItemText
+                    primary="Used"
+                    secondary={userDialog.filterInfo.used}
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <ListItemText
+                    primary="Is Finished"
+                    secondary={
+                      userDialog.filterInfo.isFinished ? "Yes" : "No yet"
+                    }
+                  />
+                </Grid>
+              </Grid>
             </Grid>
-            <Grid item xs={12} md={4} lg={4}>
-              <ListItemText
-                primary="Filter ID"
-                secondary={userDialog.filterInfo.id}
-              />
-              <ListItemText
-                primary="Used"
-                secondary={userDialog.filterInfo.used}
-              />
-              <ListItemText
-                primary="Is Finished"
-                secondary={userDialog.filterInfo.isFinished ? "Yes" : "No yet"}
-              />
-            </Grid>
+            <Grid item xs={12} md={6} lg={6}></Grid>
           </Grid>
         </List>
       </Dialog>
