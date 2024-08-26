@@ -95,6 +95,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
   user,
   mainData,
   pageName,
+  pageTitle,
 }) => {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
@@ -184,15 +185,24 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                     p: 2,
                     display: "flex",
                     flexDirection: "column",
-                    height: 240,
+                    fontWeight: 900,
+                    fontSize: "2rem",
+                    textAlign: "center",
                   }}
                 >
-                  {mainData}
+                  {pageTitle}
                 </Paper>
               </Grid>
               <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                  {/* footer */}
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100%",
+                  }}
+                >
+                  {mainData}
                 </Paper>
               </Grid>
             </Grid>

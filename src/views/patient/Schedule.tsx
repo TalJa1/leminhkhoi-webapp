@@ -7,11 +7,14 @@ import { useSelector } from "react-redux";
 const Schedule = () => {
   const user: Account = useSelector((state: any) => state.account.accounts);
 
-  console.log("user", user);
-
   return (
     <Box>
-      <MainLayout pageName="Schedule" mainData={<MainData />} user={user} />
+      <MainLayout
+        pageTitle="Schedule"
+        pageName="Schedule"
+        mainData={<MainData />}
+        user={user}
+      />
     </Box>
   );
 };

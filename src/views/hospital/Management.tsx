@@ -7,16 +7,15 @@ import { useSelector } from "react-redux";
 const Management = () => {
   const user: Account = useSelector((state: any) => state.account.accounts);
 
-  console.log("user", user);
   return (
     <Box>
-      <MainLayout pageName="Management" mainData={<MainData />} user={user} />
+      <MainLayout pageTitle="" pageName="Management" mainData={<MainData />} user={user} />
     </Box>
   );
 };
 
 const MainData: React.FC = () => {
-  return <Box>Hello 123</Box>;
+  return <Box></Box>;
 };
 
 export default Management;

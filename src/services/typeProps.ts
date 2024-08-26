@@ -8,6 +8,7 @@ export interface Account {
 
 export interface MainLayoutProps {
   pageName: string;
+  pageTitle: string;
   user: Account;
   mainData: React.ReactNode;
 }
