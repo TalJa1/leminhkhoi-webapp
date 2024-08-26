@@ -19,19 +19,17 @@ import {
   Divider,
   Grid,
   styled,
-  Badge,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { patientData } from "../../data/appData";
 import { TransitionProps } from "@mui/material/transitions";
 import CloseIcon from "@mui/icons-material/Close";
 import { Patient } from "../../services/typeProps";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-import { PickersDay, PickersDayProps, TimeField } from "@mui/x-date-pickers";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -65,7 +63,10 @@ const DoctorManagementComponent = () => {
       used: -1,
       isFinished: false,
     },
-    schedule: [],
+    schedule: {
+      time: "",
+      date: "",
+    },
   });
 
   const handleClickOpen = (id: number) => {
@@ -87,34 +88,6 @@ const DoctorManagementComponent = () => {
 
   const handleModify = () => {
     setIsModify(true);
-  };
-
-  function ServerDay(
-    props: PickersDayProps<Dayjs> & { highlightedDays?: number[] }
-  ) {
-    const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props;
-
-    const isSelected =
-      !props.outsideCurrentMonth &&
-      highlightedDays.indexOf(props.day.date()) >= 0;
-
-    return (
-      <Badge
-        key={props.day.toString()}
-        overlap="circular"
-        badgeContent={isSelected ? "🌚" : undefined}
-      >
-        <PickersDay
-          {...other}
-          outsideCurrentMonth={outsideCurrentMonth}
-          day={day}
-        />
-      </Badge>
-    );
-  }
-
-  const getHighlightedDays = (schedule: { date: string }[]) => {
-    return schedule.map((item) => dayjs(item.date).date());
   };
 
   return (
@@ -209,38 +182,17 @@ const DoctorManagementComponent = () => {
           <Divider />
           <Grid container sx={{ padding: "1rem" }}>
             <Grid item container xs={12} md={8} lg={8}>
-              <Grid item xs={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DemoContainer components={["DateCalendar", "DateCalendar"]}>
-                    <DemoItem label={`Schedule for ${userDialog.name}`}>
-                      <DateCalendar
-                        defaultValue={dayjs()}
-                        readOnly
-                        slots={{
-                          day: (props) => (
-                            <ServerDay
-                              {...props}
-                              highlightedDays={getHighlightedDays(
-                                userDialog.schedule
-                              )}
-                            />
-                          ),
-                        }}
-                      />
-                    </DemoItem>
-                  </DemoContainer>
-                </LocalizationProvider>
-              </Grid>
-              <Grid item xs={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <TimeField
-                    label="Time"
-                    defaultValue={dayjs("2022-04-17T15:30")}
-                    format="hh:mm a"
-                    readOnly
-                  />
-                </LocalizationProvider>
-              </Grid>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={["DateCalendar", "DateCalendar"]}>
+                  <DemoItem label={`Schedule for ${userDialog.name}`}>
+                    <DateCalendar
+                      value={dayjs(userDialog.schedule.date)}
+                      defaultValue={dayjs()}
+                      readOnly
+                    />
+                  </DemoItem>
+                </DemoContainer>
+              </LocalizationProvider>
             </Grid>
             <Grid item xs={12} md={4} lg={4}>
               <ListItemText

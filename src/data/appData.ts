@@ -27,28 +27,10 @@ export const patientData = [
       used: 5,
       isFinished: false,
     },
-    schedule: [
-      {
-        time: "08:00",
-        date: "2023-10-01",
-      },
-      {
-        time: "08:00",
-        date: "2023-11-01",
-      },
-      {
-        time: "08:00",
-        date: "2023-12-01",
-      },
-      {
-        time: "08:00",
-        date: "2024-01-01",
-      },
-      {
-        time: "08:00",
-        date: "2024-02-01",
-      },
-    ],
+    schedule: {
+      time: "08:00",
+      date: "2024-08-01",
+    },
   },
   {
     id: 2,
@@ -60,28 +42,10 @@ export const patientData = [
       used: 2,
       isFinished: false,
     },
-    schedule: [
-      {
-        time: "09:00",
-        date: "2023-10-02",
-      },
-      {
-        time: "09:00",
-        date: "2023-11-02",
-      },
-      {
-        time: "09:00",
-        date: "2023-12-02",
-      },
-      {
-        time: "09:00",
-        date: "2024-01-02",
-      },
-      {
-        time: "09:00",
-        date: "2024-02-02",
-      },
-    ],
+    schedule: {
+      time: "09:00",
+      date: "2024-08-02",
+    },
   },
   {
     id: 3,
@@ -93,28 +57,10 @@ export const patientData = [
       used: 4,
       isFinished: false,
     },
-    schedule: [
-      {
-        time: "10:00",
-        date: "2023-10-03",
-      },
-      {
-        time: "10:00",
-        date: "2023-11-03",
-      },
-      {
-        time: "10:00",
-        date: "2023-12-03",
-      },
-      {
-        time: "10:00",
-        date: "2024-01-03",
-      },
-      {
-        time: "10:00",
-        date: "2024-02-03",
-      },
-    ],
+    schedule: {
+      time: "10:00",
+      date: "2024-08-03",
+    },
   },
   {
     id: 4,
@@ -126,28 +72,10 @@ export const patientData = [
       used: 1,
       isFinished: false,
     },
-    schedule: [
-      {
-        time: "11:00",
-        date: "2023-10-04",
-      },
-      {
-        time: "11:00",
-        date: "2023-11-04",
-      },
-      {
-        time: "11:00",
-        date: "2023-12-04",
-      },
-      {
-        time: "11:00",
-        date: "2024-01-04",
-      },
-      {
-        time: "11:00",
-        date: "2024-02-04",
-      },
-    ],
+    schedule: {
+      time: "11:00",
+      date: "2024-08-04",
+    },
   },
   {
     id: 5,
@@ -159,27 +87,9 @@ export const patientData = [
       used: 3,
       isFinished: false,
     },
-    schedule: [
-      {
-        time: "12:00",
-        date: "2023-10-05",
-      },
-      {
-        time: "12:00",
-        date: "2023-11-05",
-      },
-      {
-        time: "12:00",
-        date: "2023-12-05",
-      },
-      {
-        time: "12:00",
-        date: "2024-01-05",
-      },
-      {
-        time: "12:00",
-        date: "2024-02-05",
-      },
-    ],
+    schedule: {
+      time: "12:00",
+      date: "2024-08-05",
+    },
   },
 ];

@@ -30,5 +30,5 @@ export interface Patient {
   age: number;
   phone: string;
   filterInfo: FilterInfo;
-  schedule: Schedule[];
+  schedule: Schedule;
 }
