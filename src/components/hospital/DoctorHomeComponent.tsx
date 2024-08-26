@@ -32,10 +32,11 @@ function createData(
   name: string,
   phone: string,
   filterId: number,
+  age: number,
   time: string,
   date: string
 ) {
-  return { name, phone, filterId, time, date };
+  return { name, phone, filterId, age, time, date };
 }
 
 function formatDate(date: Date): string {
@@ -49,11 +50,11 @@ const today = new Date();
 const formattedDate = formatDate(today);
 
 const rows = [
-  createData("Nguyễn Văn A", "0123456789", 1, "08:00", formattedDate),
-  createData("Trần Thị B", "0987654321", 2, "09:00", formattedDate),
-  createData("Lê Văn C", "0912345678", 3, "10:00", formattedDate),
-  createData("Phạm Thị D", "0908765432", 4, "11:00", formattedDate),
-  createData("Hoàng Văn E", "0934567890", 5, "12:00", formattedDate),
+  createData("Nguyễn Văn A", "0123456789", 1, 30, "08:00", formattedDate),
+  createData("Trần Thị B", "0987654321", 2, 35, "09:00", formattedDate),
+  createData("Lê Văn C", "0912345678", 3, 45, "10:00", formattedDate),
+  createData("Phạm Thị D", "0908765432", 4, 31, "11:00", formattedDate),
+  createData("Hoàng Văn E", "0934567890", 5, 30, "12:00", formattedDate),
 ];
 
 const DoctorHomeComponent = () => {
@@ -64,6 +65,7 @@ const DoctorHomeComponent = () => {
           <TableRow>
             <StyledTableCell>Patient name</StyledTableCell>
             <StyledTableCell align="right">Phone</StyledTableCell>
+            <StyledTableCell align="right">Age</StyledTableCell>
             <StyledTableCell align="right">Kidney filter(id)</StyledTableCell>
             <StyledTableCell align="right">Time</StyledTableCell>
             <StyledTableCell align="right">Date</StyledTableCell>
@@ -76,6 +78,7 @@ const DoctorHomeComponent = () => {
                 {row.name}
               </StyledTableCell>
               <StyledTableCell align="right">{row.phone}</StyledTableCell>
+              <StyledTableCell align="right">{row.age}</StyledTableCell>
               <StyledTableCell align="right">{row.filterId}</StyledTableCell>
               <StyledTableCell align="right">{row.time}</StyledTableCell>
               <StyledTableCell align="right">{row.date}</StyledTableCell>

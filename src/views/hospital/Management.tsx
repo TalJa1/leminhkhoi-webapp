@@ -3,19 +3,21 @@ import React from "react";
 import MainLayout from "../../components/MainLayout";
 import { Account } from "../../services/typeProps";
 import { useSelector } from "react-redux";
+import DoctorManagementComponent from "../../components/hospital/DoctorManagementComponent";
 
 const Management = () => {
   const user: Account = useSelector((state: any) => state.account.accounts);
 
   return (
     <Box>
-      <MainLayout pageTitle="" pageName="Management" mainData={<MainData />} user={user} />
+      <MainLayout
+        pageTitle="Patient management"
+        pageName="Management"
+        mainData={<DoctorManagementComponent />}
+        user={user}
+      />
     </Box>
   );
-};
-
-const MainData: React.FC = () => {
-  return <Box></Box>;
 };
 
 export default Management;
