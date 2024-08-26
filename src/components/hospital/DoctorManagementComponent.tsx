@@ -31,6 +31,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { DateTimeField } from "@mui/x-date-pickers";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -45,7 +47,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
   "&:last-child td, &:last-child th": {
     border: 0,
   },
@@ -96,31 +97,47 @@ const DoctorManagementComponent = () => {
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
-            <TableRow
-              sx={{
-                backgroundColor: "black",
-              }}
-            >
-              <TableCell sx={{ color: "white" }}>ID</TableCell>
-              <TableCell sx={{ color: "white" }}>Name</TableCell>
-              <TableCell sx={{ color: "white" }} align="right">
-                Age
+            <TableRow sx={{ backgroundColor: "black" }}>
+              <TableCell sx={{ color: "white" }}>
+                <Typography sx={{ fontSize: "1.2rem" }}>ID</Typography>
+              </TableCell>
+              <TableCell sx={{ color: "white" }}>
+                <Typography sx={{ fontSize: "1.2rem" }}>Name</Typography>
               </TableCell>
               <TableCell sx={{ color: "white" }} align="right">
-                Phone
+                <Typography sx={{ fontSize: "1.2rem" }}>Age</Typography>
               </TableCell>
               <TableCell sx={{ color: "white" }} align="right">
-                Actions
+                <Typography sx={{ fontSize: "1.2rem" }}>Phone</Typography>
+              </TableCell>
+              <TableCell sx={{ color: "white" }} align="right">
+                <Typography sx={{ fontSize: "1.2rem" }}>Actions</Typography>
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {patientData.map((patient) => (
               <StyledTableRow key={patient.id}>
-                <TableCell>{patient.id}</TableCell>
-                <TableCell>{patient.name}</TableCell>
-                <TableCell align="right">{patient.age}</TableCell>
-                <TableCell align="right">{patient.phone}</TableCell>
+                <TableCell>
+                  <Typography sx={{ fontSize: "2rem" }}>
+                    {patient.id}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography sx={{ fontSize: "2rem" }}>
+                    {patient.name}
+                  </Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography sx={{ fontSize: "2rem" }}>
+                    {patient.age}
+                  </Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography sx={{ fontSize: "2rem" }}>
+                    {patient.phone}
+                  </Typography>
+                </TableCell>
                 <TableCell align="right">
                   <IconButton
                     onClick={() => {
@@ -136,7 +153,6 @@ const DoctorManagementComponent = () => {
         </Table>
       </TableContainer>
 
-      {/* Show dialog */}
       <Dialog
         fullScreen
         open={open}
@@ -161,23 +177,51 @@ const DoctorManagementComponent = () => {
               color="inherit"
               onClick={isModify ? handleSave : handleModify}
             >
-              {isModify ? "Save" : "Edit"}
+              <Typography>{isModify ? "Save" : "Edit"}</Typography>
             </Button>
           </Toolbar>
         </AppBar>
         <List>
           <Grid container sx={{ padding: "1rem" }}>
             <Grid item xs={12} md={3} lg={3}>
-              <ListItemText primary="ID" secondary={userDialog.id} />
+              <ListItemText
+                primary={<Typography>ID</Typography>}
+                secondary={
+                  <Typography sx={{ fontSize: "2rem" }}>
+                    {userDialog.id}
+                  </Typography>
+                }
+              />
             </Grid>
             <Grid item xs={12} md={3} lg={3}>
-              <ListItemText primary="Name" secondary={userDialog.name} />
+              <ListItemText
+                primary={<Typography>Name</Typography>}
+                secondary={
+                  <Typography sx={{ fontSize: "2rem" }}>
+                    {userDialog.name}
+                  </Typography>
+                }
+              />
             </Grid>
             <Grid item xs={12} md={3} lg={3}>
-              <ListItemText primary="Age" secondary={userDialog.age} />
+              <ListItemText
+                primary={<Typography>Age</Typography>}
+                secondary={
+                  <Typography sx={{ fontSize: "2rem" }}>
+                    {userDialog.age}
+                  </Typography>
+                }
+              />
             </Grid>
             <Grid item xs={12} md={3} lg={3}>
-              <ListItemText primary="Phone" secondary={userDialog.phone} />
+              <ListItemText
+                primary={<Typography>Phone</Typography>}
+                secondary={
+                  <Typography sx={{ fontSize: "2rem" }}>
+                    {userDialog.phone}
+                  </Typography>
+                }
+              />
             </Grid>
           </Grid>
           <Divider />
@@ -206,21 +250,41 @@ const DoctorManagementComponent = () => {
               <Grid item container xs={12} md={12} lg={4}>
                 <Grid item xs={4}>
                   <ListItemText
-                    primary="Filter ID"
-                    secondary={userDialog.filterInfo.id}
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <ListItemText
-                    primary="Used"
-                    secondary={userDialog.filterInfo.used}
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <ListItemText
-                    primary="Is Finished"
+                    primary={<Typography>Filter ID</Typography>}
                     secondary={
-                      userDialog.filterInfo.isFinished ? "Yes" : "No yet"
+                      <Typography sx={{ fontSize: "2rem" }}>
+                        {userDialog.filterInfo.id}
+                      </Typography>
+                    }
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <ListItemText
+                    primary={<Typography>Used</Typography>}
+                    secondary={
+                      <Typography sx={{ fontSize: "2rem" }}>
+                        {userDialog.filterInfo.used}
+                      </Typography>
+                    }
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <ListItemText
+                    primary={
+                      <Typography sx={{ textAlign: "center" }}>
+                        Is Finished
+                      </Typography>
+                    }
+                    secondary={
+                      <Typography
+                        sx={{ fontSize: "2rem", textAlign: "center" }}
+                      >
+                        {userDialog.filterInfo.isFinished ? (
+                          <CheckCircleIcon color="primary" />
+                        ) : (
+                          <CancelIcon color="error" />
+                        )}
+                      </Typography>
                     }
                   />
                 </Grid>
