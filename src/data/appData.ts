@@ -25,7 +25,7 @@ export const patientData = [
     filterInfo: {
       id: 1,
       used: 5,
-      isFinished: true,
+      isFinished: false,
     },
     schedule: [
       {
@@ -125,7 +125,7 @@ export const patientData = [
     filterInfo: {
       id: 5,
       used: 3,
-      isFinished: true,
+      isFinished: false,
     },
     schedule: [
       {

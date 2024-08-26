@@ -19,6 +19,7 @@ import {
   Divider,
   Grid,
   styled,
+  Box,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { patientData } from "../../data/appData";
@@ -47,6 +48,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const DoctorManagementComponent = () => {
   const [open, setOpen] = useState(false);
+  const [isModify, setIsModify] = useState(false);
   const [userDialog, setUserDialog] = useState<Patient>({
     id: -1,
     name: "",
@@ -70,6 +72,15 @@ const DoctorManagementComponent = () => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleSave = () => {
+    setIsModify(false);
+    setOpen(false);
+  };
+
+  const handleModify = () => {
+    setIsModify(true);
   };
 
   return (
@@ -103,12 +114,12 @@ const DoctorManagementComponent = () => {
                 <TableCell align="right">{patient.age}</TableCell>
                 <TableCell align="right">{patient.phone}</TableCell>
                 <TableCell align="right">
-                  <IconButton aria-label="info">
-                    <VisibilityIcon
-                      onClick={() => {
-                        handleClickOpen(patient.id);
-                      }}
-                    />
+                  <IconButton
+                    onClick={() => {
+                      handleClickOpen(patient.id);
+                    }}
+                  >
+                    <VisibilityIcon />
                   </IconButton>
                 </TableCell>
               </StyledTableRow>
@@ -137,21 +148,55 @@ const DoctorManagementComponent = () => {
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               Detail
             </Typography>
-            <Button autoFocus color="inherit" onClick={handleClose}>
-              save
+            <Button
+              autoFocus
+              color="inherit"
+              onClick={isModify ? handleSave : handleModify}
+            >
+              {isModify ? "Save" : "Edit"}
             </Button>
           </Toolbar>
         </AppBar>
         <List>
-          <Grid container sx={{ margin: "1rem" }}>
-            <Grid item xs={6}>
+          <Grid container sx={{ padding: "1rem" }}>
+            <Grid item xs={12} md={3} lg={3}>
               <ListItemText primary="ID" secondary={userDialog.id} />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} md={3} lg={3}>
               <ListItemText primary="Name" secondary={userDialog.name} />
+            </Grid>
+            <Grid item xs={12} md={3} lg={3}>
+              <ListItemText primary="Age" secondary={userDialog.age} />
+            </Grid>
+            <Grid item xs={12} md={3} lg={3}>
+              <ListItemText primary="Phone" secondary={userDialog.phone} />
             </Grid>
           </Grid>
           <Divider />
+          <Grid container sx={{ padding: "1rem" }}>
+            <Grid item xs={12} md={8} lg={8}>
+              {userDialog.schedule.map((s, index) => (
+                <Box key={index}>
+                  <ListItemText primary="Time" secondary={s.time} />
+                  <ListItemText primary="Date" secondary={s.date} />
+                </Box>
+              ))}
+            </Grid>
+            <Grid item xs={12} md={4} lg={4}>
+              <ListItemText
+                primary="Filter ID"
+                secondary={userDialog.filterInfo.id}
+              />
+              <ListItemText
+                primary="Used"
+                secondary={userDialog.filterInfo.used}
+              />
+              <ListItemText
+                primary="Is Finished"
+                secondary={userDialog.filterInfo.isFinished ? "Yes" : "No yet"}
+              />
+            </Grid>
+          </Grid>
         </List>
       </Dialog>
     </React.Fragment>
