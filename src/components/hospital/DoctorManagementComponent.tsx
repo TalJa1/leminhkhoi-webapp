@@ -31,7 +31,7 @@ import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-import { PickersDay, PickersDayProps } from "@mui/x-date-pickers";
+import { PickersDay, PickersDayProps, TimeField } from "@mui/x-date-pickers";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -208,27 +208,39 @@ const DoctorManagementComponent = () => {
           </Grid>
           <Divider />
           <Grid container sx={{ padding: "1rem" }}>
-            <Grid item xs={12} md={8} lg={8}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DemoContainer components={["DateCalendar", "DateCalendar"]}>
-                  <DemoItem label={`Schedule for ${userDialog.name}`}>
-                    <DateCalendar
-                      defaultValue={dayjs()}
-                      readOnly
-                      slots={{
-                        day: (props) => (
-                          <ServerDay
-                            {...props}
-                            highlightedDays={getHighlightedDays(
-                              userDialog.schedule
-                            )}
-                          />
-                        ),
-                      }}
-                    />
-                  </DemoItem>
-                </DemoContainer>
-              </LocalizationProvider>
+            <Grid item container xs={12} md={8} lg={8}>
+              <Grid item xs={6}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DemoContainer components={["DateCalendar", "DateCalendar"]}>
+                    <DemoItem label={`Schedule for ${userDialog.name}`}>
+                      <DateCalendar
+                        defaultValue={dayjs()}
+                        readOnly
+                        slots={{
+                          day: (props) => (
+                            <ServerDay
+                              {...props}
+                              highlightedDays={getHighlightedDays(
+                                userDialog.schedule
+                              )}
+                            />
+                          ),
+                        }}
+                      />
+                    </DemoItem>
+                  </DemoContainer>
+                </LocalizationProvider>
+              </Grid>
+              <Grid item xs={6}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <TimeField
+                    label="Time"
+                    defaultValue={dayjs("2022-04-17T15:30")}
+                    format="hh:mm a"
+                    readOnly
+                  />
+                </LocalizationProvider>
+              </Grid>
             </Grid>
             <Grid item xs={12} md={4} lg={4}>
               <ListItemText
