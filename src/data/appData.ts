@@ -12,5 +12,8 @@ export const userAccounts = [
   {
     email: "patient1@gmail.com",
     password: "patient1",
+    role: "patient",
   },
 ];
+
+

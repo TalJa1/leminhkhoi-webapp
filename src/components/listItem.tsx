@@ -22,6 +22,23 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Management" />
     </ListItemButton>
+    <ListItemButton component={Link} to="/login">
+      <ListItemIcon>
+        <LogoutIcon />
+      </ListItemIcon>
+      <ListItemText primary="Log Out" />
+    </ListItemButton>
+  </React.Fragment>
+);
+
+export const secondaryListItems = (
+  <React.Fragment>
+    <ListItemButton component={Link} to="/home">
+      <ListItemIcon>
+        <DashboardIcon />
+      </ListItemIcon>
+      <ListItemText primary="Home" />
+    </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
         <PeopleIcon />

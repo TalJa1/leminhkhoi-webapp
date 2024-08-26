@@ -42,7 +42,6 @@ export default function SignIn() {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [role, setRole] = useState<string>("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -100,19 +99,19 @@ export default function SignIn() {
         (account) => account.email === email && account.password === password
       );
 
+      console.log("account", account);
+
       if (!account) {
         setEmailError("Invalid email or password");
         setPasswordError("Invalid email or password");
         return;
       }
 
-      setRole(account.role || "");
-
       dispatch(
         setAccounts({
           email,
           password,
-          role: role,
+          role: account.role,
         })
       );
       navigate("/home");
