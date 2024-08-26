@@ -18,11 +18,13 @@ import {
   ListItemText,
   Divider,
   Grid,
+  styled,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { patientData } from "../../data/appData";
 import { TransitionProps } from "@mui/material/transitions";
 import CloseIcon from "@mui/icons-material/Close";
+import { Patient } from "../../services/typeProps";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -33,12 +35,36 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
+
 const DoctorManagementComponent = () => {
   const [open, setOpen] = useState(false);
-  const [selectedId, setSelectedId] = useState(-1);
+  const [userDialog, setUserDialog] = useState<Patient>({
+    id: -1,
+    name: "",
+    age: -1,
+    phone: "",
+    filterInfo: {
+      id: -1,
+      used: -1,
+      isFinished: false,
+    },
+    schedule: [],
+  });
 
   const handleClickOpen = (id: number) => {
-    setSelectedId(id);
+    const patient = patientData.find((p) => p.id === id);
+    if (patient) {
+      setUserDialog(patient);
+    }
     setOpen(true);
   };
 
@@ -71,7 +97,7 @@ const DoctorManagementComponent = () => {
           </TableHead>
           <TableBody>
             {patientData.map((patient) => (
-              <TableRow key={patient.id}>
+              <StyledTableRow key={patient.id}>
                 <TableCell>{patient.id}</TableCell>
                 <TableCell>{patient.name}</TableCell>
                 <TableCell align="right">{patient.age}</TableCell>
@@ -85,7 +111,7 @@ const DoctorManagementComponent = () => {
                     />
                   </IconButton>
                 </TableCell>
-              </TableRow>
+              </StyledTableRow>
             ))}
           </TableBody>
         </Table>
@@ -117,12 +143,12 @@ const DoctorManagementComponent = () => {
           </Toolbar>
         </AppBar>
         <List>
-          <Grid container>
+          <Grid container sx={{ margin: "1rem" }}>
             <Grid item xs={6}>
-              <ListItemText primary="ID" secondary={selectedId} />
+              <ListItemText primary="ID" secondary={userDialog.id} />
             </Grid>
             <Grid item xs={6}>
-              <ListItemText primary="Name" secondary="Nguyễn Văn A" />
+              <ListItemText primary="Name" secondary={userDialog.name} />
             </Grid>
           </Grid>
           <Divider />
