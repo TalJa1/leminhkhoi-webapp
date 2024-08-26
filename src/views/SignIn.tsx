@@ -15,6 +15,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setAccounts } from "../redux/accountRedux";
+import { userAccounts } from "../data/appData";
 
 function Copyright(props: any) {
   return (
@@ -41,8 +42,7 @@ export default function SignIn() {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [role, setRole] = useState<string>("doctor");
+  const [role, setRole] = useState<string>("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -94,7 +94,20 @@ export default function SignIn() {
       setPasswordError("Password must be at least 6 characters");
     }
 
+    // Email and password are valid
     if (isEmailValid && isPasswordValid) {
+      const account = userAccounts.find(
+        (account) => account.email === email && account.password === password
+      );
+
+      if (!account) {
+        setEmailError("Invalid email or password");
+        setPasswordError("Invalid email or password");
+        return;
+      }
+
+      setRole(account.role || "");
+
       dispatch(
         setAccounts({
           email,
