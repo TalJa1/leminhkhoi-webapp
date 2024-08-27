@@ -1,7 +1,8 @@
+import { Box } from "@mui/material";
 import React from "react";
 
 const PatientHomeComponent = () => {
-  return <div>PatientHomeComponent</div>;
+  return <Box>PatientHomeComponent</Box>;
 };
 
 export default PatientHomeComponent;
