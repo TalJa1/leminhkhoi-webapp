@@ -336,7 +336,9 @@ const DoctorManagementComponent = () => {
                             <DemoContainer components={["MobileTimePicker"]}>
                               <MobileTimePicker
                                 label={"Select Time"}
-                                value={dayjs(scheduleEntry.time, "HH:mm")}
+                                value={dayjs(
+                                  `2022-04-17T${scheduleEntry!.time}`
+                                )}
                                 onChange={(newValue) => {
                                   setUserDialog((prev) => ({
                                     ...prev,
