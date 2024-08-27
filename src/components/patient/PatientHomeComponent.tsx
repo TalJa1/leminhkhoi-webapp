@@ -28,7 +28,7 @@ const PatientHomeComponent = () => {
         <Grid item xs={12} md={6} lg={6}>
           <Paper elevation={3} sx={{ padding: 3 }}>
             <Typography variant="h5" gutterBottom>
-              Schedule
+              Schedule (Weekly)
             </Typography>
             {patientInfo.schedule.map((entry, index) => (
               <Box key={index} sx={{ marginBottom: 2 }}>
