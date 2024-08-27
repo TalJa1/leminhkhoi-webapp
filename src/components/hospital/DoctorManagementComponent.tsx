@@ -198,9 +198,9 @@ const DoctorManagementComponent = () => {
           </Grid>
           <Divider />
           <Grid container sx={{ padding: "1rem" }}>
-            <Grid container item xs={12} md={6} lg={6} spacing={2}>
+            <Grid container item xs={12} md={6} lg={6} columnGap={1}>
               <Grid item xs={12} md={12}>
-                <TableContainer component={Paper} sx={{ marginTop: 2 }}>
+                <TableContainer component={Paper}>
                   <Table>
                     <TableHead>
                       <TableRow>
@@ -280,7 +280,9 @@ const DoctorManagementComponent = () => {
                 </Paper>
               </Grid>
             </Grid>
-            <Grid item xs={12} md={6} lg={6}></Grid>
+            <Grid item container xs={12} md={6} lg={6}>
+              {isModify && <Grid item></Grid>}
+            </Grid>
           </Grid>
         </List>
       </Dialog>
