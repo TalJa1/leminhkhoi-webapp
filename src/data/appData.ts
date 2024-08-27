@@ -19,6 +19,33 @@ export const userAccounts = [
   },
 ];
 
+export const patientInfo = {
+  id: 1,
+  accountID: 3,
+  name: "Nguyễn Văn A",
+  age: 35,
+  phone: "0987654321",
+  filterInfo: {
+    id: 1,
+    used: 5,
+    isFinished: false,
+  },
+  schedule: [
+    {
+      time: "08:00",
+      dayofWeek: "monday",
+    },
+    {
+      time: "09:00",
+      dayofWeek: "friday",
+    },
+    {
+      time: "08:00",
+      dayofWeek: "sunday",
+    },
+  ],
+};
+
 export const patientData = [
   {
     id: 1,
