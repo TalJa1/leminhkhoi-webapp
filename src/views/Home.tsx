@@ -3,6 +3,7 @@ import React from "react";
 import MainLayout from "../components/MainLayout";
 import { Account } from "../services/typeProps";
 import DoctorHomeComponent from "../components/hospital/DoctorHomeComponent";
+import PatientHomeComponent from "../components/patient/PatientHomeComponent";
 
 const Home = () => {
   const user: Account = JSON.parse(sessionStorage.getItem("userData") ?? "");
@@ -32,7 +33,11 @@ const MainDataDoctor: React.FC = () => {
 };
 
 const MainDataPatient: React.FC = () => {
-  return <Box>patient</Box>;
+  return (
+    <Box>
+      <PatientHomeComponent />
+    </Box>
+  );
 };
 
 export default Home;

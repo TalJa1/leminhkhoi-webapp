@@ -4,7 +4,6 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import LogoutIcon from "@mui/icons-material/Logout";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import PeopleIcon from "@mui/icons-material/People";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import { Link } from "react-router-dom";
 
@@ -38,12 +37,6 @@ export const secondaryListItems = (
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Home" />
-    </ListItemButton>
-    <ListItemButton component={Link} to="/schedule">
-      <ListItemIcon>
-        <PeopleIcon />
-      </ListItemIcon>
-      <ListItemText primary="Schedule" />
     </ListItemButton>
     <ListItemButton component={Link} to="/login">
       <ListItemIcon>
