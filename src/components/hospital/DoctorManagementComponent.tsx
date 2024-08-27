@@ -19,9 +19,10 @@ import {
   Divider,
   Grid,
   styled,
+  Box,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { patientData } from "../../data/appData";
+import { daysOfWeek, patientData } from "../../data/appData";
 import { TransitionProps } from "@mui/material/transitions";
 import CloseIcon from "@mui/icons-material/Close";
 import { Patient } from "../../services/typeProps";
@@ -197,8 +198,8 @@ const DoctorManagementComponent = () => {
             </Grid>
           </Grid>
           <Divider />
-          <Grid container sx={{ padding: "1rem" }}>
-            <Grid container item xs={12} md={6} lg={6} columnGap={1}>
+          <Grid container>
+            <Grid container item xs={12} md={6} lg={6} sx={{ padding: "1rem" }}>
               <Grid item xs={12} md={12}>
                 <TableContainer component={Paper}>
                   <Table>
@@ -281,7 +282,39 @@ const DoctorManagementComponent = () => {
               </Grid>
             </Grid>
             <Grid item container xs={12} md={6} lg={6}>
-              {isModify && <Grid item></Grid>}
+              {isModify && (
+                <Grid item sx={{ padding: "1rem" }}>
+                  {daysOfWeek.map((day) => {
+                    const isScheduled = userDialog.schedule.some(
+                      (entry) =>
+                        entry.dayofWeek.toLowerCase() === day.toLowerCase()
+                    );
+                    return (
+                      <Box
+                        key={day}
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          marginBottom: "0.5rem",
+                        }}
+                      >
+                        <Typography
+                          sx={{ marginRight: "1rem", width: "100px" }}
+                        >
+                          {day}
+                        </Typography>
+                        <IconButton sx={{ width: "40px", height: "40px" }}>
+                          {isScheduled ? (
+                            <CheckCircleIcon color="primary" />
+                          ) : (
+                            <CancelIcon color="error" />
+                          )}
+                        </IconButton>
+                      </Box>
+                    );
+                  })}
+                </Grid>
+              )}
             </Grid>
           </Grid>
         </List>
