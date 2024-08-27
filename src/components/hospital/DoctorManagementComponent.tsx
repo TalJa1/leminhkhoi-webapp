@@ -73,6 +73,8 @@ const DoctorManagementComponent = () => {
     ],
   });
 
+  console.log("userDialog", userDialog);
+
   const handleClickOpen = (id: number) => {
     const patient = patientData.find((p) => p.id === id);
     if (patient) {
@@ -349,7 +351,7 @@ const DoctorManagementComponent = () => {
                                     )
                                   : [
                                       ...prev.schedule,
-                                      { dayofWeek: day, time: "00:00" },
+                                      { time: "00:00", dayofWeek: day },
                                     ],
                               };
                             });
