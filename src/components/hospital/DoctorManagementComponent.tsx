@@ -31,8 +31,8 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import dayjs from "dayjs";
+import { MobileTimePicker } from "@mui/x-date-pickers";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -333,9 +333,9 @@ const DoctorManagementComponent = () => {
                         </IconButton>
                         {isScheduled && (
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DemoContainer components={["TimePicker"]}>
-                              <TimePicker
-                                label="Select Time"
+                            <DemoContainer components={["MobileTimePicker"]}>
+                              <MobileTimePicker
+                                label={"Select Time"}
                                 value={dayjs(scheduleEntry.time, "HH:mm")}
                                 onChange={(newValue) => {
                                   setUserDialog((prev) => ({

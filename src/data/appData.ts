@@ -54,16 +54,16 @@ export const patientData = [
     },
     schedule: [
       {
-        time: "08:00",
+        time: "12:00",
         dayofWeek: "monday",
       },
       {
-        time: "09:00",
-        dayofWeek: "friday",
+        time: "14:00",
+        dayofWeek: "wednesday",
       },
       {
-        time: "08:00",
-        dayofWeek: "sunday",
+        time: "15:00",
+        dayofWeek: "saturday",
       },
     ],
   },
