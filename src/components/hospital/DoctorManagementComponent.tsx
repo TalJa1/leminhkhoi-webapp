@@ -223,14 +223,14 @@ const DoctorManagementComponent = () => {
                     <TableBody>
                       {userDialog.schedule.map((entry, index) => (
                         <TableRow key={index}>
-                          <TableCell sx={{ textAlign: "center" }}>
+                          <TableCell sx={{ textAlign: "center", width: "50%" }}>
                             <Typography
                               sx={{ fontSize: "1rem", fontWeight: "bold" }}
                             >
                               {entry.dayofWeek}
                             </Typography>
                           </TableCell>
-                          <TableCell sx={{ textAlign: "center" }}>
+                          <TableCell sx={{ textAlign: "center", width: "50%" }}>
                             <Typography
                               sx={{ fontSize: "1rem", fontWeight: "bold" }}
                             >
