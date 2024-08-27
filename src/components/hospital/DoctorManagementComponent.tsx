@@ -99,19 +99,19 @@ const DoctorManagementComponent = () => {
           <TableHead>
             <TableRow sx={{ backgroundColor: "black" }}>
               <TableCell sx={{ color: "white" }}>
-                <Typography sx={{ fontSize: "1.2rem" }}>ID</Typography>
+                <Typography>ID</Typography>
               </TableCell>
               <TableCell sx={{ color: "white" }}>
-                <Typography sx={{ fontSize: "1.2rem" }}>Name</Typography>
+                <Typography>Name</Typography>
               </TableCell>
               <TableCell sx={{ color: "white" }} align="right">
-                <Typography sx={{ fontSize: "1.2rem" }}>Age</Typography>
+                <Typography>Age</Typography>
               </TableCell>
               <TableCell sx={{ color: "white" }} align="right">
-                <Typography sx={{ fontSize: "1.2rem" }}>Phone</Typography>
+                <Typography>Phone</Typography>
               </TableCell>
               <TableCell sx={{ color: "white" }} align="right">
-                <Typography sx={{ fontSize: "1.2rem" }}>Actions</Typography>
+                <Typography>Actions</Typography>
               </TableCell>
             </TableRow>
           </TableHead>
@@ -119,22 +119,22 @@ const DoctorManagementComponent = () => {
             {patientData.map((patient) => (
               <StyledTableRow key={patient.id}>
                 <TableCell>
-                  <Typography sx={{ fontSize: "2rem" }}>
+                  <Typography>
                     {patient.id}
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography sx={{ fontSize: "2rem" }}>
+                  <Typography>
                     {patient.name}
                   </Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <Typography sx={{ fontSize: "2rem" }}>
+                  <Typography>
                     {patient.age}
                   </Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <Typography sx={{ fontSize: "2rem" }}>
+                  <Typography>
                     {patient.phone}
                   </Typography>
                 </TableCell>
@@ -187,7 +187,7 @@ const DoctorManagementComponent = () => {
               <ListItemText
                 primary={<Typography>ID</Typography>}
                 secondary={
-                  <Typography sx={{ fontSize: "2rem" }}>
+                  <Typography>
                     {userDialog.id}
                   </Typography>
                 }
@@ -197,7 +197,7 @@ const DoctorManagementComponent = () => {
               <ListItemText
                 primary={<Typography>Name</Typography>}
                 secondary={
-                  <Typography sx={{ fontSize: "2rem" }}>
+                  <Typography>
                     {userDialog.name}
                   </Typography>
                 }
@@ -207,7 +207,7 @@ const DoctorManagementComponent = () => {
               <ListItemText
                 primary={<Typography>Age</Typography>}
                 secondary={
-                  <Typography sx={{ fontSize: "2rem" }}>
+                  <Typography>
                     {userDialog.age}
                   </Typography>
                 }
@@ -217,7 +217,7 @@ const DoctorManagementComponent = () => {
               <ListItemText
                 primary={<Typography>Phone</Typography>}
                 secondary={
-                  <Typography sx={{ fontSize: "2rem" }}>
+                  <Typography>
                     {userDialog.phone}
                   </Typography>
                 }
@@ -252,7 +252,7 @@ const DoctorManagementComponent = () => {
                   <ListItemText
                     primary={<Typography>Filter ID</Typography>}
                     secondary={
-                      <Typography sx={{ fontSize: "2rem" }}>
+                      <Typography>
                         {userDialog.filterInfo.id}
                       </Typography>
                     }
@@ -262,7 +262,7 @@ const DoctorManagementComponent = () => {
                   <ListItemText
                     primary={<Typography>Used</Typography>}
                     secondary={
-                      <Typography sx={{ fontSize: "2rem" }}>
+                      <Typography>
                         {userDialog.filterInfo.used}
                       </Typography>
                     }
