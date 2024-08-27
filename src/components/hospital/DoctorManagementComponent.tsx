@@ -204,7 +204,7 @@ const DoctorManagementComponent = () => {
             </Grid>
           </Grid>
           <Divider />
-          <Grid container>
+          <Grid container alignItems="flex-start">
             <Grid container item xs={12} md={6} lg={6} sx={{ padding: "1rem" }}>
               <Grid item xs={12} md={12}>
                 <TableContainer component={Paper}>
