@@ -105,8 +105,9 @@ export default function SignIn() {
       sessionStorage.setItem(
         "userData",
         JSON.stringify({
-          email,
-          password,
+          accountID: account.accountID,
+          email: email,
+          password: password,
           role: account.role,
         })
       );

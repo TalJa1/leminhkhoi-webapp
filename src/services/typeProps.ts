@@ -1,6 +1,7 @@
 import React from "react";
 
 export interface Account {
+  accountID: number;
   email: string;
   password: string;
   role: string;
