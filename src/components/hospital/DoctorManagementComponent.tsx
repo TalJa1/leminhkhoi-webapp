@@ -28,6 +28,11 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Patient } from "../../services/typeProps";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import dayjs from "dayjs";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -77,6 +82,7 @@ const DoctorManagementComponent = () => {
   };
 
   const handleClose = () => {
+    setIsModify(false);
     setOpen(false);
   };
 
@@ -285,31 +291,70 @@ const DoctorManagementComponent = () => {
               {isModify && (
                 <Grid item sx={{ padding: "1rem" }}>
                   {daysOfWeek.map((day) => {
-                    const isScheduled = userDialog.schedule.some(
+                    const scheduleEntry = userDialog.schedule.find(
                       (entry) =>
                         entry.dayofWeek.toLowerCase() === day.toLowerCase()
                     );
+                    const isScheduled = !!scheduleEntry;
                     return (
                       <Box
                         key={day}
                         sx={{
                           display: "flex",
                           alignItems: "center",
-                          marginBottom: "0.5rem",
+                          marginBottom: "1rem",
+                          padding: "0.5rem",
+                          border: "1px solid #e0e0e0",
+                          borderRadius: "8px",
+                          backgroundColor: "#f9f9f9",
                         }}
                       >
                         <Typography
-                          sx={{ marginRight: "1rem", width: "100px" }}
+                          sx={{
+                            marginRight: "1rem",
+                            width: "100px",
+                            fontWeight: "bold",
+                          }}
                         >
                           {day}
                         </Typography>
-                        <IconButton sx={{ width: "40px", height: "40px" }}>
+                        <IconButton
+                          sx={{
+                            width: "40px",
+                            height: "40px",
+                            marginRight: "1rem",
+                          }}
+                        >
                           {isScheduled ? (
                             <CheckCircleIcon color="primary" />
                           ) : (
                             <CancelIcon color="error" />
                           )}
                         </IconButton>
+                        {isScheduled && (
+                          <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DemoContainer components={["TimePicker"]}>
+                              <TimePicker
+                                label="Select Time"
+                                value={dayjs(scheduleEntry.time, "HH:mm")}
+                                onChange={(newValue) => {
+                                  setUserDialog((prev) => ({
+                                    ...prev,
+                                    schedule: prev.schedule.map((entry) =>
+                                      entry.dayofWeek.toLowerCase() ===
+                                      day.toLowerCase()
+                                        ? {
+                                            ...entry,
+                                            time: newValue!.format("HH:mm"),
+                                          }
+                                        : entry
+                                    ),
+                                  }));
+                                }}
+                              />
+                            </DemoContainer>
+                          </LocalizationProvider>
+                        )}
                       </Box>
                     );
                   })}
