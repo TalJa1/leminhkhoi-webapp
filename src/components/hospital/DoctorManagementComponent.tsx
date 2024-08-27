@@ -25,12 +25,6 @@ import { patientData } from "../../data/appData";
 import { TransitionProps } from "@mui/material/transitions";
 import CloseIcon from "@mui/icons-material/Close";
 import { Patient } from "../../services/typeProps";
-import dayjs from "dayjs";
-import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-import { DateTimeField } from "@mui/x-date-pickers";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 
@@ -65,10 +59,12 @@ const DoctorManagementComponent = () => {
       used: -1,
       isFinished: false,
     },
-    schedule: {
-      time: "",
-      date: "",
-    },
+    schedule: [
+      {
+        time: "",
+        dayofWeek: "",
+      },
+    ],
   });
 
   const handleClickOpen = (id: number) => {
@@ -119,24 +115,16 @@ const DoctorManagementComponent = () => {
             {patientData.map((patient) => (
               <StyledTableRow key={patient.id}>
                 <TableCell>
-                  <Typography>
-                    {patient.id}
-                  </Typography>
+                  <Typography>{patient.id}</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography>
-                    {patient.name}
-                  </Typography>
+                  <Typography>{patient.name}</Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <Typography>
-                    {patient.age}
-                  </Typography>
+                  <Typography>{patient.age}</Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <Typography>
-                    {patient.phone}
-                  </Typography>
+                  <Typography>{patient.phone}</Typography>
                 </TableCell>
                 <TableCell align="right">
                   <IconButton
@@ -186,108 +174,110 @@ const DoctorManagementComponent = () => {
             <Grid item xs={12} md={3} lg={3}>
               <ListItemText
                 primary={<Typography>ID</Typography>}
-                secondary={
-                  <Typography>
-                    {userDialog.id}
-                  </Typography>
-                }
+                secondary={<Typography>{userDialog.id}</Typography>}
               />
             </Grid>
             <Grid item xs={12} md={3} lg={3}>
               <ListItemText
                 primary={<Typography>Name</Typography>}
-                secondary={
-                  <Typography>
-                    {userDialog.name}
-                  </Typography>
-                }
+                secondary={<Typography>{userDialog.name}</Typography>}
               />
             </Grid>
             <Grid item xs={12} md={3} lg={3}>
               <ListItemText
                 primary={<Typography>Age</Typography>}
-                secondary={
-                  <Typography>
-                    {userDialog.age}
-                  </Typography>
-                }
+                secondary={<Typography>{userDialog.age}</Typography>}
               />
             </Grid>
             <Grid item xs={12} md={3} lg={3}>
               <ListItemText
                 primary={<Typography>Phone</Typography>}
-                secondary={
-                  <Typography>
-                    {userDialog.phone}
-                  </Typography>
-                }
+                secondary={<Typography>{userDialog.phone}</Typography>}
               />
             </Grid>
           </Grid>
           <Divider />
           <Grid container sx={{ padding: "1rem" }}>
-            <Grid item container xs={12} md={6} lg={6}>
-              <Grid item xs={12} md={12} lg={8}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DemoContainer components={["DateCalendar", "DateCalendar"]}>
-                    <DemoItem label={`Schedule for ${userDialog.name}`}>
-                      <DateCalendar
-                        value={dayjs(userDialog.schedule.date)}
-                        defaultValue={dayjs()}
-                        readOnly
-                      />
-                      <DateTimeField
-                        readOnly
-                        defaultValue={dayjs(
-                          `${userDialog.schedule.date}T${userDialog.schedule.time}`
-                        )}
-                        format="DD/MM/YYYY hh:mm a"
-                      />
-                    </DemoItem>
-                  </DemoContainer>
-                </LocalizationProvider>
+            <Grid container item xs={12} md={6} lg={6} spacing={2}>
+              <Grid item xs={12} md={12}>
+                <TableContainer component={Paper} sx={{ marginTop: 2 }}>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell sx={{ textAlign: "center" }}>
+                          <Typography
+                            sx={{ fontSize: "1.2rem", fontWeight: "bold" }}
+                          >
+                            Day of Week
+                          </Typography>
+                        </TableCell>
+                        <TableCell sx={{ textAlign: "center" }}>
+                          <Typography
+                            sx={{ fontSize: "1.2rem", fontWeight: "bold" }}
+                          >
+                            Time
+                          </Typography>
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {userDialog.schedule.map((entry, index) => (
+                        <TableRow key={index}>
+                          <TableCell sx={{ textAlign: "center" }}>
+                            <Typography
+                              sx={{ fontSize: "1rem", fontWeight: "bold" }}
+                            >
+                              {entry.dayofWeek}
+                            </Typography>
+                          </TableCell>
+                          <TableCell sx={{ textAlign: "center" }}>
+                            <Typography
+                              sx={{ fontSize: "1rem", fontWeight: "bold" }}
+                            >
+                              {entry.time}
+                            </Typography>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </Grid>
-              <Grid item container xs={12} md={12} lg={4}>
-                <Grid item xs={4}>
-                  <ListItemText
-                    primary={<Typography>Filter ID</Typography>}
-                    secondary={
-                      <Typography>
-                        {userDialog.filterInfo.id}
-                      </Typography>
-                    }
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <ListItemText
-                    primary={<Typography>Used</Typography>}
-                    secondary={
-                      <Typography>
-                        {userDialog.filterInfo.used}
-                      </Typography>
-                    }
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <ListItemText
-                    primary={
-                      <Typography sx={{ textAlign: "center" }}>
-                        Is Finished
-                      </Typography>
-                    }
-                    secondary={
-                      <Typography
-                        sx={{ fontSize: "2rem", textAlign: "center" }}
-                      >
-                        {userDialog.filterInfo.isFinished ? (
-                          <CheckCircleIcon color="primary" />
-                        ) : (
-                          <CancelIcon color="error" />
-                        )}
-                      </Typography>
-                    }
-                  />
-                </Grid>
+              <Grid item xs={12} md={12}>
+                <Paper sx={{ padding: 2 }}>
+                  <Grid container spacing={2} sx={{ textAlign: "center" }}>
+                    <Grid item xs={4}>
+                      <ListItemText
+                        primary={<Typography>Filter ID</Typography>}
+                        secondary={
+                          <Typography>{userDialog.filterInfo.id}</Typography>
+                        }
+                      />
+                    </Grid>
+                    <Grid item xs={4}>
+                      <ListItemText
+                        primary={<Typography>Used</Typography>}
+                        secondary={
+                          <Typography>{userDialog.filterInfo.used}</Typography>
+                        }
+                      />
+                    </Grid>
+                    <Grid item xs={4}>
+                      <ListItemText
+                        primary={<Typography>Is Finished</Typography>}
+                        secondary={
+                          <>
+                            {userDialog.filterInfo.isFinished ? (
+                              <CheckCircleIcon color="primary" />
+                            ) : (
+                              <CancelIcon color="error" />
+                            )}
+                          </>
+                        }
+                      />
+                    </Grid>
+                  </Grid>
+                </Paper>
               </Grid>
             </Grid>
             <Grid item xs={12} md={6} lg={6}></Grid>

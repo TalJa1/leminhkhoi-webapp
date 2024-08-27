@@ -27,10 +27,20 @@ export const patientData = [
       used: 5,
       isFinished: false,
     },
-    schedule: {
-      time: "08:00",
-      date: "2024-08-01",
-    },
+    schedule: [
+      {
+        time: "08:00",
+        dayofWeek: "monday",
+      },
+      {
+        time: "09:00",
+        dayofWeek: "friday",
+      },
+      {
+        time: "08:00",
+        dayofWeek: "sunday",
+      },
+    ],
   },
   {
     id: 2,
@@ -42,10 +52,20 @@ export const patientData = [
       used: 2,
       isFinished: false,
     },
-    schedule: {
-      time: "09:00",
-      date: "2024-08-02",
-    },
+    schedule: [
+      {
+        time: "08:00",
+        dayofWeek: "monday",
+      },
+      {
+        time: "09:00",
+        dayofWeek: "friday",
+      },
+      {
+        time: "08:00",
+        dayofWeek: "sunday",
+      },
+    ],
   },
   {
     id: 3,
@@ -57,10 +77,20 @@ export const patientData = [
       used: 4,
       isFinished: false,
     },
-    schedule: {
-      time: "10:00",
-      date: "2024-08-03",
-    },
+    schedule: [
+      {
+        time: "08:00",
+        dayofWeek: "monday",
+      },
+      {
+        time: "09:00",
+        dayofWeek: "friday",
+      },
+      {
+        time: "08:00",
+        dayofWeek: "sunday",
+      },
+    ],
   },
   {
     id: 4,
@@ -72,10 +102,20 @@ export const patientData = [
       used: 1,
       isFinished: false,
     },
-    schedule: {
-      time: "11:00",
-      date: "2024-08-04",
-    },
+    schedule: [
+      {
+        time: "08:00",
+        dayofWeek: "monday",
+      },
+      {
+        time: "09:00",
+        dayofWeek: "friday",
+      },
+      {
+        time: "08:00",
+        dayofWeek: "sunday",
+      },
+    ],
   },
   {
     id: 5,
@@ -87,9 +127,19 @@ export const patientData = [
       used: 3,
       isFinished: false,
     },
-    schedule: {
-      time: "12:00",
-      date: "2024-08-05",
-    },
+    schedule: [
+      {
+        time: "08:00",
+        dayofWeek: "monday",
+      },
+      {
+        time: "09:00",
+        dayofWeek: "friday",
+      },
+      {
+        time: "08:00",
+        dayofWeek: "sunday",
+      },
+    ],
   },
 ];

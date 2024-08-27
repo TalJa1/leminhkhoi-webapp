@@ -15,7 +15,7 @@ export interface MainLayoutProps {
 
 export interface Schedule {
   time: string;
-  date: string;
+  dayofWeek: string;
 }
 
 export interface FilterInfo {
@@ -30,5 +30,5 @@ export interface Patient {
   age: number;
   phone: string;
   filterInfo: FilterInfo;
-  schedule: Schedule;
+  schedule: Schedule[];
 }
