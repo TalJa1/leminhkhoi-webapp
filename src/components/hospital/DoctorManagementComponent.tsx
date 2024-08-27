@@ -332,6 +332,28 @@ const DoctorManagementComponent = () => {
                             height: "40px",
                             marginRight: "1rem",
                           }}
+                          onClick={() => {
+                            setUserDialog((prev) => {
+                              const isScheduled = prev.schedule.some(
+                                (entry) =>
+                                  entry.dayofWeek.toLowerCase() ===
+                                  day.toLowerCase()
+                              );
+                              return {
+                                ...prev,
+                                schedule: isScheduled
+                                  ? prev.schedule.filter(
+                                      (entry) =>
+                                        entry.dayofWeek.toLowerCase() !==
+                                        day.toLowerCase()
+                                    )
+                                  : [
+                                      ...prev.schedule,
+                                      { dayofWeek: day, time: "00:00" },
+                                    ],
+                              };
+                            });
+                          }}
                         >
                           {isScheduled ? (
                             <CheckCircleIcon color="primary" />
