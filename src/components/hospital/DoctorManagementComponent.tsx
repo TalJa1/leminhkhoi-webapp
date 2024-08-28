@@ -20,6 +20,7 @@ import {
   Grid,
   styled,
   Box,
+  InputBase,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { daysOfWeek, patientData } from "../../data/appData";
@@ -33,6 +34,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import { MobileTimePicker } from "@mui/x-date-pickers";
+import SearchIcon from "@mui/icons-material/Search";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -72,8 +74,7 @@ const DoctorManagementComponent = () => {
       },
     ],
   });
-
-  console.log("userDialog", userDialog);
+  const [search, setSearch] = useState("");
 
   const handleClickOpen = (id: number) => {
     const patient = patientData.find((p) => p.id === id);
@@ -97,8 +98,42 @@ const DoctorManagementComponent = () => {
     setIsModify(true);
   };
 
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  };
+
+  const filteredPatients = patientData.filter(
+    (patient) =>
+      patient.name.toLowerCase().includes(search.toLowerCase()) ||
+      patient.phone.includes(search)
+  );
+
   return (
     <React.Fragment>
+      <Box>
+        <Paper
+          component="form"
+          sx={{
+            p: "2px 4px",
+            display: "flex",
+            alignItems: "center",
+            width: 400,
+            float: "right",
+            marginBottom: "10px",
+          }}
+        >
+          <InputBase
+            value={search}
+            onChange={handleSearchChange}
+            sx={{ ml: 1, flex: 1 }}
+            placeholder="Search by name or phone"
+            inputProps={{ "aria-label": "Search by name or phone" }}
+          />
+          <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
+            <SearchIcon />
+          </IconButton>
+        </Paper>
+      </Box>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -121,7 +156,7 @@ const DoctorManagementComponent = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {patientData.map((patient) => (
+            {filteredPatients.map((patient) => (
               <StyledTableRow key={patient.id}>
                 <TableCell>
                   <Typography>{patient.id}</Typography>
