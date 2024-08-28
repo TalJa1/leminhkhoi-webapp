@@ -16,9 +16,13 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
     color: theme.palette.common.white,
+    paddingTop: theme.spacing(3), // Increase padding top for header cells
+    paddingBottom: theme.spacing(3), // Increase padding bottom for header cells
   },
   [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
+    fontSize: 16,
+    paddingTop: theme.spacing(3), // Increase padding top for body cells
+    paddingBottom: theme.spacing(3), // Increase padding bottom for body cells
   },
 }));
 
