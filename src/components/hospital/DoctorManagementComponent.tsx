@@ -108,6 +108,10 @@ const DoctorManagementComponent = () => {
       patient.phone.includes(search)
   );
 
+  const capitalizeString = (str: string) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
   return (
     <React.Fragment>
       <Box>
@@ -279,7 +283,7 @@ const DoctorManagementComponent = () => {
                             <Typography
                               sx={{ fontSize: "1rem", fontWeight: "bold" }}
                             >
-                              {entry.dayofWeek}
+                              {capitalizeString(entry.dayofWeek)}
                             </Typography>
                           </TableCell>
                           <TableCell sx={{ textAlign: "center", width: "50%" }}>
