@@ -10,7 +10,7 @@ import Paper from "@mui/material/Paper";
 import { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
-import { IconButton, InputBase } from "@mui/material";
+import { Chip, IconButton, InputBase } from "@mui/material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -137,6 +137,13 @@ const DoctorHomeComponent = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <Box sx={{ marginTop: "10px" }}>
+        <Chip
+          sx={{ float: "right" }}
+          color="primary"
+          label={`Total number of patients: ${rows.length}`}
+        />
+      </Box>
     </Box>
   );
 };

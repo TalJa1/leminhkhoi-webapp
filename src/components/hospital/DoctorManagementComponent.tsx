@@ -21,6 +21,7 @@ import {
   styled,
   Box,
   InputBase,
+  Chip,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { daysOfWeek, patientData } from "../../data/appData";
@@ -188,6 +189,14 @@ const DoctorManagementComponent = () => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      <Box sx={{ marginTop: "10px" }}>
+        <Chip
+          sx={{ float: "right" }}
+          color="primary"
+          label={`Total number of patients: ${filteredPatients.length}`}
+        />
+      </Box>
 
       <Dialog
         fullScreen
