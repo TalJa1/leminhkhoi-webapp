@@ -7,6 +7,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { useState } from "react";
+import SearchIcon from "@mui/icons-material/Search";
+import Box from "@mui/material/Box";
+import { IconButton, InputBase } from "@mui/material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -49,7 +53,7 @@ function formatDate(date: Date): string {
 const today = new Date();
 const formattedDate = formatDate(today);
 
-const rows = [
+const initialRows = [
   createData("Nguyễn Văn A", "0123456789", 1, 30, "08:00", formattedDate),
   createData("Trần Thị B", "0987654321", 2, 35, "09:00", formattedDate),
   createData("Lê Văn C", "0912345678", 3, 45, "10:00", formattedDate),
@@ -58,35 +62,78 @@ const rows = [
 ];
 
 const DoctorHomeComponent = () => {
+  const [rows, setRows] = useState(initialRows);
+  const [search, setSearch] = useState("");
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSearch(value);
+    if (value === "") {
+      setRows(initialRows);
+    } else {
+      const filteredRows = initialRows.filter(
+        (row) =>
+          row.name.toLowerCase().includes(value.toLowerCase()) ||
+          row.phone.includes(value)
+      );
+      setRows(filteredRows);
+    }
+  };
+
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Patient name</StyledTableCell>
-            <StyledTableCell align="right">Phone</StyledTableCell>
-            <StyledTableCell align="right">Age</StyledTableCell>
-            <StyledTableCell align="right">Kidney filter(id)</StyledTableCell>
-            <StyledTableCell align="right">Time</StyledTableCell>
-            <StyledTableCell align="right">Date</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
-              <StyledTableCell component="th" scope="row">
-                {row.name}
-              </StyledTableCell>
-              <StyledTableCell align="right">{row.phone}</StyledTableCell>
-              <StyledTableCell align="right">{row.age}</StyledTableCell>
-              <StyledTableCell align="right">{row.filterId}</StyledTableCell>
-              <StyledTableCell align="right">{row.time}</StyledTableCell>
-              <StyledTableCell align="right">{row.date}</StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Box>
+      <Paper
+        component="form"
+        sx={{
+          p: "2px 4px",
+          display: "flex",
+          alignItems: "center",
+          width: 400,
+          float: "right",
+          marginBottom: "10px",
+        }}
+      >
+        <InputBase
+          value={search}
+          onChange={handleSearchChange}
+          sx={{ ml: 1, flex: 1 }}
+          placeholder="Search by name or phone"
+          inputProps={{ "aria-label": "Search by name or phone" }}
+        />
+        <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
+          <SearchIcon />
+        </IconButton>
+      </Paper>
+
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 700 }} aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>Patient name</StyledTableCell>
+              <StyledTableCell align="right">Phone</StyledTableCell>
+              <StyledTableCell align="right">Age</StyledTableCell>
+              <StyledTableCell align="right">Kidney filter(id)</StyledTableCell>
+              <StyledTableCell align="right">Time</StyledTableCell>
+              <StyledTableCell align="right">Date</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <StyledTableRow key={row.name}>
+                <StyledTableCell component="th" scope="row">
+                  {row.name}
+                </StyledTableCell>
+                <StyledTableCell align="right">{row.phone}</StyledTableCell>
+                <StyledTableCell align="right">{row.age}</StyledTableCell>
+                <StyledTableCell align="right">{row.filterId}</StyledTableCell>
+                <StyledTableCell align="right">{row.time}</StyledTableCell>
+                <StyledTableCell align="right">{row.date}</StyledTableCell>
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 };
 
