@@ -134,7 +134,7 @@ const DoctorManagementComponent = () => {
             p: "2px 4px",
             display: "flex",
             alignItems: "center",
-            width: 400,
+            // maxWidth: 400,
             float: "right",
             marginBottom: "10px",
           }}

@@ -92,7 +92,6 @@ const DoctorHomeComponent = () => {
           p: "2px 4px",
           display: "flex",
           alignItems: "center",
-          width: 400,
           float: "right",
           marginBottom: "10px",
         }}
