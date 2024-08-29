@@ -27,7 +27,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import { daysOfWeek, patientData } from "../../data/appData";
 import { TransitionProps } from "@mui/material/transitions";
 import CloseIcon from "@mui/icons-material/Close";
-import { Patient } from "../../services/typeProps";
+import { Patient, SnackBarColor } from "../../services/typeProps";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -36,6 +36,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import { MobileTimePicker } from "@mui/x-date-pickers";
 import SearchIcon from "@mui/icons-material/Search";
+import NotiAlert from "../NotiAlert";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -76,6 +77,9 @@ const DoctorManagementComponent = () => {
     ],
   });
   const [search, setSearch] = useState("");
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackBarTitle, setSnackBarTitle] = useState<string>("");
+  const [snackBarColor, setSnackBarColor] = useState<SnackBarColor>("success");
 
   const handleClickOpen = (id: number) => {
     const patient = patientData.find((p) => p.id === id);
@@ -91,8 +95,16 @@ const DoctorManagementComponent = () => {
   };
 
   const handleSave = () => {
+    setSnackBarTitle("Save successfully");
+    setSnackBarColor("success");
+    setSnackbarOpen(true);
+
     setIsModify(false);
     setOpen(false);
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
   };
 
   const handleModify = () => {
@@ -197,7 +209,12 @@ const DoctorManagementComponent = () => {
           label={`Total number of patients: ${filteredPatients.length}`}
         />
       </Box>
-
+      <NotiAlert
+        open={snackbarOpen}
+        handleClose={handleCloseSnackbar}
+        color={snackBarColor}
+        title={snackBarTitle}
+      />
       <Dialog
         fullScreen
         open={open}

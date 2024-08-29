@@ -1,3 +1,4 @@
+import { TransitionProps } from "@mui/material/transitions";
 import React from "react";
 
 export interface Account {
@@ -33,3 +34,22 @@ export interface Patient {
   filterInfo: FilterInfo;
   schedule: Schedule[];
 }
+
+export interface SnackbarProps {
+  open: boolean;
+  Transition: React.ComponentType<
+    TransitionProps & {
+      children: React.ReactElement<any, any>;
+    }
+  >;
+}
+
+export type SnackBarColor = "success" | "error";
+
+export type NotiAlertType = {
+  open: boolean;
+
+  handleClose: () => void;
+  title: string;
+  color: SnackBarColor;
+};
