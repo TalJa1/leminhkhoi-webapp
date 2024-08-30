@@ -1,3 +1,4 @@
+// Login table
 export const userAccounts = [
   {
     accountID: 1,
@@ -19,6 +20,7 @@ export const userAccounts = [
   },
 ];
 
+// Patient info after login successfully return response
 export const patientInfo = {
   id: 1,
   accountID: 3,
@@ -46,6 +48,7 @@ export const patientInfo = {
   ],
 };
 
+// List of patients for doctor/nurse route => can view/edit schedule
 export const patientData = [
   {
     id: 1,
