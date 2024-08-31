@@ -14,29 +14,22 @@ import {
   Toolbar,
   Typography,
   Button,
-  List,
-  ListItemText,
-  Divider,
-  Grid,
   styled,
   Box,
   InputBase,
   Chip,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { daysOfWeek, filterListData, patientData } from "../../data/appData";
+import { filterListData } from "../../data/appData";
 import { TransitionProps } from "@mui/material/transitions";
 import CloseIcon from "@mui/icons-material/Close";
 import { FilterListProps, SnackBarColor } from "../../services/typeProps";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CancelIcon from "@mui/icons-material/Cancel";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import dayjs from "dayjs";
-import { MobileTimePicker } from "@mui/x-date-pickers";
 import SearchIcon from "@mui/icons-material/Search";
 import NotiAlert from "../NotiAlert";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -59,6 +52,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const DoctorFilterManagement = () => {
   const [open, setOpen] = useState(false);
   const [isModify, setIsModify] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [filterData, setFilterData] =
     useState<FilterListProps[]>(filterListData);
   const [selectedFilter, setSelectedFilter] = useState<FilterListProps>({
@@ -274,206 +268,46 @@ const DoctorFilterManagement = () => {
             </Button>
           </Toolbar>
         </AppBar>
-        <List>
-          <Grid container sx={{ padding: "1rem" }}>
-            <Grid item xs={12} md={3} lg={3}>
-              <ListItemText
-                primary={<Typography>ID</Typography>}
-                secondary={<Typography>{}</Typography>}
-              />
-            </Grid>
-            <Grid item xs={12} md={3} lg={3}>
-              <ListItemText
-                primary={<Typography>Name</Typography>}
-                secondary={<Typography>{}</Typography>}
-              />
-            </Grid>
-            <Grid item xs={12} md={3} lg={3}>
-              <ListItemText
-                primary={<Typography>Age</Typography>}
-                secondary={<Typography>{}</Typography>}
-              />
-            </Grid>
-            <Grid item xs={12} md={3} lg={3}>
-              <ListItemText
-                primary={<Typography>Phone</Typography>}
-                secondary={<Typography>{}</Typography>}
-              />
-            </Grid>
-          </Grid>
-          <Divider />
-          <Grid container alignItems="flex-start">
-            <Grid
-              container
-              item
-              xs={12}
-              md={6}
-              lg={6}
-              sx={{ padding: "1rem" }}
-              rowGap={1}
+        <Box>
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography sx={{ fontWeight: "bold" }}>
+                Filter Information for Id {selectedFilter.id}
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>Used: {selectedFilter.used}</AccordionDetails>
+            <AccordionDetails
+              sx={{ display: "flex", flexDirection: "row", columnGap: "5px" }}
             >
-              <Grid item xs={12} md={12}>
-                <TableContainer component={Paper}>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell sx={{ textAlign: "center" }}>
-                          <Typography
-                            sx={{ fontSize: "1.2rem", fontWeight: "bold" }}
-                          >
-                            Day of Week
-                          </Typography>
-                        </TableCell>
-                        <TableCell sx={{ textAlign: "center" }}>
-                          <Typography
-                            sx={{ fontSize: "1.2rem", fontWeight: "bold" }}
-                          >
-                            Time
-                          </Typography>
-                        </TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>{/* Show detail here */}</TableBody>
-                  </Table>
-                </TableContainer>
-              </Grid>
-              <Grid item xs={12} md={12}>
-                <Paper sx={{ padding: 2 }}>
-                  <Grid container spacing={2} sx={{ textAlign: "center" }}>
-                    <Grid item xs={4}>
-                      {/* <ListItemText
-                        primary={<Typography>Filter ID</Typography>}
-                        secondary={
-                          <Typography>{userDialog.filterInfo.id}</Typography>
-                        }
-                      /> */}
-                    </Grid>
-                    <Grid item xs={4}>
-                      {/* <ListItemText
-                        primary={<Typography>Used</Typography>}
-                        secondary={
-                          <Typography>{userDialog.filterInfo.used}</Typography>
-                        }
-                      /> */}
-                    </Grid>
-                    <Grid item xs={4}>
-                      {/* <ListItemText
-                        primary={<Typography>Is Finished</Typography>}
-                        secondary={
-                          <>
-                            {userDialog.filterInfo.isFinished ? (
-                              <CheckCircleIcon color="primary" />
-                            ) : (
-                              <CancelIcon color="error" />
-                            )}
-                          </>
-                        }
-                      /> */}
-                    </Grid>
-                  </Grid>
-                </Paper>
-              </Grid>
-            </Grid>
-            <Grid item container xs={12} md={6} lg={6}>
-              {/* {isModify && (
-                <Grid item sx={{ padding: "1rem" }}>
-                  {daysOfWeek.map((day) => {
-                    const scheduleEntry = userDialog.schedule.find(
-                      (entry) =>
-                        entry.dayofWeek.toLowerCase() === day.toLowerCase()
-                    );
-                    const isScheduled = !!scheduleEntry;
-                    return (
-                      <Box
-                        key={day}
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          marginBottom: "1rem",
-                          padding: "0.5rem",
-                          border: "1px solid #e0e0e0",
-                          borderRadius: "8px",
-                          backgroundColor: "#f9f9f9",
-                        }}
-                      >
-                        <Typography
-                          sx={{
-                            marginRight: "1rem",
-                            width: "100px",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          {day}
-                        </Typography>
-                        <IconButton
-                          sx={{
-                            width: "40px",
-                            height: "40px",
-                            marginRight: "1rem",
-                          }}
-                          onClick={() => {
-                            setUserDialog((prev) => {
-                              const isScheduled = prev.schedule.some(
-                                (entry) =>
-                                  entry.dayofWeek.toLowerCase() ===
-                                  day.toLowerCase()
-                              );
-                              return {
-                                ...prev,
-                                schedule: isScheduled
-                                  ? prev.schedule.filter(
-                                      (entry) =>
-                                        entry.dayofWeek.toLowerCase() !==
-                                        day.toLowerCase()
-                                    )
-                                  : [
-                                      ...prev.schedule,
-                                      { time: "00:00", dayofWeek: day },
-                                    ],
-                              };
-                            });
-                          }}
-                        >
-                          {isScheduled ? (
-                            <CheckCircleIcon color="primary" />
-                          ) : (
-                            <CancelIcon color="error" />
-                          )}
-                        </IconButton>
-                        {isScheduled && (
-                          <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DemoContainer components={["MobileTimePicker"]}>
-                              <MobileTimePicker
-                                label={"Select Time"}
-                                value={dayjs(
-                                  `2022-04-17T${scheduleEntry!.time}`
-                                )}
-                                onChange={(newValue) => {
-                                  setUserDialog((prev) => ({
-                                    ...prev,
-                                    schedule: prev.schedule.map((entry) =>
-                                      entry.dayofWeek.toLowerCase() ===
-                                      day.toLowerCase()
-                                        ? {
-                                            ...entry,
-                                            time: newValue!.format("HH:mm"),
-                                          }
-                                        : entry
-                                    ),
-                                  }));
-                                }}
-                              />
-                            </DemoContainer>
-                          </LocalizationProvider>
-                        )}
-                      </Box>
-                    );
-                  })}
-                </Grid>
-              )} */}
-            </Grid>
-          </Grid>
-        </List>
+              Is finished:
+              {selectedFilter.isFinished ? (
+                <Typography
+                  sx={{
+                    color: "red",
+                    fontWeight: "bold",
+                    fontSize: "16px",
+                    textDecoration: "line-through",
+                  }}
+                >
+                  Finished
+                </Typography>
+              ) : (
+                <Typography
+                  sx={{
+                    color: "green",
+                    fontWeight: "bold",
+                    fontSize: "16px",
+                  }}
+                >
+                  In Use
+                </Typography>
+              )}
+            </AccordionDetails>
+            <AccordionDetails>
+              Description: {selectedFilter.description}
+            </AccordionDetails>
+          </Accordion>
+        </Box>
       </Dialog>
     </React.Fragment>
   );
