@@ -33,6 +33,7 @@ import NotiAlert from "../NotiAlert";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
+import { useNavigate } from "react-router-dom";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -53,6 +54,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const DoctorFilterManagement = () => {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [isModify, setIsModify] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -145,6 +147,16 @@ const DoctorFilterManagement = () => {
   return (
     <React.Fragment>
       <Box>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            navigate("/filteraddition");
+          }}
+          sx={{ mr: 1 }}
+        >
+          Add
+        </Button>
         <Paper
           component="form"
           sx={{

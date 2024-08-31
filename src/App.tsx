@@ -5,6 +5,7 @@ import Home from "./views/Home";
 import Management from "./views/hospital/Management";
 import FilterManagement from "./views/hospital/FilterManagement";
 import PatientAddition from "./components/hospital/PatientAddition";
+import FilterAddition from "./components/hospital/FilterAddition";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/management" element={<Management />} />
         <Route path="/filtermanagement" element={<FilterManagement />} />
         <Route path="/patientaddition" element={<PatientAddition />} />
+        <Route path="/filteraddition" element={<FilterAddition />} />
       </Routes>
     </BrowserRouter>
   );
