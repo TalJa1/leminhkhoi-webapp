@@ -275,7 +275,7 @@ const DoctorFilterManagement = () => {
           </Toolbar>
         </AppBar>
         <Box>
-          <Accordion>
+          <Accordion sx={{ marginBottom: 5 }}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography sx={{ fontWeight: "bold" }}>
                 Filter Information for Id {selectedFilter.id}
@@ -358,6 +358,34 @@ const DoctorFilterManagement = () => {
               )}
             </AccordionDetails>
           </Accordion>
+          <Typography variant="h6" sx={{ marginTop: 2, textAlign: "center" }}>
+            List of Patients
+          </Typography>
+          <TableContainer
+            component={Paper}
+            sx={{ width: "80%", margin: "0 auto" }}
+          >
+            <Table>
+              <TableHead>
+                <TableRow sx={{ backgroundColor: "black" }}>
+                  <TableCell sx={{ color: "white" }}>ID</TableCell>
+                  <TableCell sx={{ color: "white" }}>Name</TableCell>
+                  <TableCell sx={{ color: "white" }}>Age</TableCell>
+                  <TableCell sx={{ color: "white" }}>Phone</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {selectedFilter.forPatient.map((patient) => (
+                  <TableRow key={patient.id}>
+                    <TableCell>{patient.id}</TableCell>
+                    <TableCell>{patient.name}</TableCell>
+                    <TableCell>{patient.age}</TableCell>
+                    <TableCell>{patient.phone}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </Box>
       </Dialog>
     </React.Fragment>
