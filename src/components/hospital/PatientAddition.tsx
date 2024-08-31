@@ -59,6 +59,18 @@ const PatientAddition: React.FC = () => {
     console.log("Patient Data:", patientData);
   };
 
+  const isFormValid = () => {
+    const { name, phone, age, filterInfo, schedule } = patientData;
+    return (
+      name.trim() !== "" &&
+      phone.trim() !== "" &&
+      age > 0 &&
+      filterInfo.id > 0 &&
+      filterInfo.used > 0 &&
+      schedule.length > 0
+    );
+  };
+
   return (
     <Box
       sx={{
@@ -155,7 +167,12 @@ const PatientAddition: React.FC = () => {
             </LocalizationProvider>
           </Box>
         ))}
-        <Button type="submit" variant="contained" color="primary">
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          disabled={!isFormValid()}
+        >
           Add Patient
         </Button>
       </Box>
