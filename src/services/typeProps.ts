@@ -54,10 +54,17 @@ export type NotiAlertType = {
   color: SnackBarColor;
 };
 
+export interface ForPatient {
+  id: number;
+  name: string;
+  age: number;
+  phone: string;
+}
+
 export interface FilterListProps {
   id: number;
   used: number;
   description: string;
   isFinished: boolean;
-  forPatient: Patient[];
+  forPatient: ForPatient[];
 }

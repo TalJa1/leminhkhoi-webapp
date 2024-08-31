@@ -199,25 +199,6 @@ export const filterListData = [
         name: "Nguyễn Văn A",
         age: 35,
         phone: "0987654321",
-        filterInfo: {
-          id: 1,
-          used: 5,
-          isFinished: false,
-        },
-        schedule: [
-          {
-            time: "08:00",
-            dayofWeek: "monday",
-          },
-          {
-            time: "09:00",
-            dayofWeek: "friday",
-          },
-          {
-            time: "08:00",
-            dayofWeek: "sunday",
-          },
-        ],
       },
     ],
   },
@@ -232,21 +213,6 @@ export const filterListData = [
         name: "Trần Thị B",
         age: 28,
         phone: "0987654322",
-        filterInfo: {
-          id: 2,
-          used: 3,
-          isFinished: true,
-        },
-        schedule: [
-          {
-            time: "10:00",
-            dayofWeek: "tuesday",
-          },
-          {
-            time: "11:00",
-            dayofWeek: "thursday",
-          },
-        ],
       },
     ],
   },
@@ -261,21 +227,6 @@ export const filterListData = [
         name: "Lê Văn C",
         age: 42,
         phone: "0987654323",
-        filterInfo: {
-          id: 3,
-          used: 7,
-          isFinished: false,
-        },
-        schedule: [
-          {
-            time: "09:00",
-            dayofWeek: "wednesday",
-          },
-          {
-            time: "14:00",
-            dayofWeek: "saturday",
-          },
-        ],
       },
     ],
   },
@@ -290,21 +241,6 @@ export const filterListData = [
         name: "Phạm Thị D",
         age: 30,
         phone: "0987654324",
-        filterInfo: {
-          id: 4,
-          used: 2,
-          isFinished: true,
-        },
-        schedule: [
-          {
-            time: "08:00",
-            dayofWeek: "monday",
-          },
-          {
-            time: "10:00",
-            dayofWeek: "friday",
-          },
-        ],
       },
     ],
   },
@@ -319,21 +255,6 @@ export const filterListData = [
         name: "Ngô Văn E",
         age: 50,
         phone: "0987654325",
-        filterInfo: {
-          id: 5,
-          used: 4,
-          isFinished: false,
-        },
-        schedule: [
-          {
-            time: "11:00",
-            dayofWeek: "tuesday",
-          },
-          {
-            time: "13:00",
-            dayofWeek: "thursday",
-          },
-        ],
       },
     ],
   },
@@ -348,21 +269,6 @@ export const filterListData = [
         name: "Đỗ Thị F",
         age: 45,
         phone: "0987654326",
-        filterInfo: {
-          id: 6,
-          used: 6,
-          isFinished: true,
-        },
-        schedule: [
-          {
-            time: "10:00",
-            dayofWeek: "wednesday",
-          },
-          {
-            time: "15:00",
-            dayofWeek: "saturday",
-          },
-        ],
       },
     ],
   },

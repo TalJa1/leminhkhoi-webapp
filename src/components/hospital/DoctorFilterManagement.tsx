@@ -21,6 +21,7 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  TextField,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { filterListData } from "../../data/appData";
@@ -30,6 +31,8 @@ import { FilterListProps, SnackBarColor } from "../../services/typeProps";
 import SearchIcon from "@mui/icons-material/Search";
 import NotiAlert from "../NotiAlert";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -66,25 +69,6 @@ const DoctorFilterManagement = () => {
         name: "Nguyễn Văn A",
         age: 0,
         phone: "0987654321",
-        filterInfo: {
-          id: 1,
-          used: 5,
-          isFinished: false,
-        },
-        schedule: [
-          {
-            time: "08:00",
-            dayofWeek: "monday",
-          },
-          {
-            time: "09:00",
-            dayofWeek: "friday",
-          },
-          {
-            time: "08:00",
-            dayofWeek: "sunday",
-          },
-        ],
       },
     ],
   });
@@ -136,6 +120,28 @@ const DoctorFilterManagement = () => {
     );
   });
 
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+    if (name === "used") {
+      setSelectedFilter((prev) => ({
+        ...prev,
+        [name]: Number(value),
+      }));
+      return;
+    }
+    setSelectedFilter((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleIsFinishedChange = (value: any) => {
+    setSelectedFilter((prev) => ({
+      ...prev,
+      isFinished: value,
+    }));
+  };
+
   return (
     <React.Fragment>
       <Box>
@@ -172,7 +178,7 @@ const DoctorFilterManagement = () => {
                 <Typography>Used</Typography>
               </TableCell>
               <TableCell sx={{ color: "white" }} align="center">
-                <Typography>Is finished</Typography>
+                <Typography>Status</Typography>
               </TableCell>
               <TableCell sx={{ color: "white" }} align="left">
                 <Typography>Description</Typography>
@@ -275,12 +281,45 @@ const DoctorFilterManagement = () => {
                 Filter Information for Id {selectedFilter.id}
               </Typography>
             </AccordionSummary>
-            <AccordionDetails>Used: {selectedFilter.used}</AccordionDetails>
+            <AccordionDetails>
+              {isModify ? (
+                <TextField
+                  label="Used"
+                  name="used"
+                  type="number"
+                  value={selectedFilter.used}
+                  onChange={handleInputChange}
+                  inputProps={{ min: 0 }}
+                />
+              ) : (
+                <Typography>Used: {selectedFilter.used}</Typography>
+              )}
+            </AccordionDetails>
             <AccordionDetails
-              sx={{ display: "flex", flexDirection: "row", columnGap: "5px" }}
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                columnGap: "5px",
+                alignItems: "center",
+              }}
             >
-              Is finished:
-              {selectedFilter.isFinished ? (
+              Status:
+              {isModify ? (
+                <>
+                  <IconButton
+                    color={selectedFilter.isFinished ? "primary" : "default"}
+                    onClick={() => handleIsFinishedChange(true)}
+                  >
+                    <CheckCircleIcon />
+                  </IconButton>
+                  <IconButton
+                    color={!selectedFilter.isFinished ? "primary" : "default"}
+                    onClick={() => handleIsFinishedChange(false)}
+                  >
+                    <CancelIcon />
+                  </IconButton>
+                </>
+              ) : selectedFilter.isFinished ? (
                 <Typography
                   sx={{
                     color: "red",
@@ -304,7 +343,19 @@ const DoctorFilterManagement = () => {
               )}
             </AccordionDetails>
             <AccordionDetails>
-              Description: {selectedFilter.description}
+              {isModify ? (
+                <TextField
+                  label="Description"
+                  name="description"
+                  value={selectedFilter.description}
+                  onChange={handleInputChange}
+                  fullWidth
+                />
+              ) : (
+                <Typography>
+                  Description: {selectedFilter.description}
+                </Typography>
+              )}
             </AccordionDetails>
           </Accordion>
         </Box>
