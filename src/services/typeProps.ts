@@ -53,3 +53,11 @@ export type NotiAlertType = {
   title: string;
   color: SnackBarColor;
 };
+
+export interface FilterListProps {
+  id: number;
+  used: number;
+  description: string;
+  isFinished: boolean;
+  forPatient: Patient[];
+}

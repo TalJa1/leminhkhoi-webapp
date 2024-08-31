@@ -59,6 +59,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const DoctorManagementComponent = () => {
   const [open, setOpen] = useState(false);
   const [isModify, setIsModify] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [listPatientData, setListPatientData] = useState<Patient[]>(patientData);
   const [userDialog, setUserDialog] = useState<Patient>({
     id: -1,
     name: "",
@@ -115,7 +117,7 @@ const DoctorManagementComponent = () => {
     setSearch(event.target.value);
   };
 
-  const filteredPatients = patientData.filter(
+  const filteredPatients = listPatientData.filter(
     (patient) =>
       patient.name.toLowerCase().includes(search.toLowerCase()) ||
       patient.phone.includes(search)
