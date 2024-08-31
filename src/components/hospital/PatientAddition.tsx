@@ -6,8 +6,10 @@ import { LocalizationProvider, MobileTimePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { useNavigate } from "react-router-dom";
 
 const PatientAddition: React.FC = () => {
+  const navigate = useNavigate();
   const [patientData, setPatientData] = useState<Patient>({
     id: 0,
     name: "",
@@ -97,9 +99,24 @@ const PatientAddition: React.FC = () => {
           borderRadius: 2,
         }}
       >
-        <Typography variant="h4" component="h1" gutterBottom>
-          Add New Patient
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "flex-start",
+            gap: 2,
+          }}
+        >
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => navigate(-1)}
+          >
+            Back
+          </Button>
+          <Typography variant="h4" component="h1" gutterBottom>
+            Add New Patient
+          </Typography>
+        </Box>
         <TextField
           label="Name"
           name="name"
