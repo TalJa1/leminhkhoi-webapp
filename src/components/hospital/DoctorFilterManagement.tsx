@@ -150,16 +150,15 @@ const DoctorFilterManagement = () => {
 
   const handleClick = () => {
     setLoading(true);
-    // Simulate an async operation
     setTimeout(() => {
       setLoading(false);
     }, 2000);
-    // navigate("/filteraddition");
   };
 
   return (
     <React.Fragment>
       <Box>
+        {/* Call API and directly create new filter with all default value */}
         <ProgressingButton loading={loading} onClick={handleClick}>
           Add
         </ProgressingButton>
