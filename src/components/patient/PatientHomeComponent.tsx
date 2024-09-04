@@ -1,6 +1,12 @@
 import React from "react";
 import { Box, Grid, Typography, Paper } from "@mui/material";
 import { patientInfo } from "../../data/appData";
+import {
+  dayOfWeekMap,
+  formatDate,
+  getDateOfCurrentWeek,
+} from "../../services/datetimeService";
+import { DayOfWeek } from "../../services/typeProps";
 
 const PatientHomeComponent = () => {
   return (
@@ -30,18 +36,25 @@ const PatientHomeComponent = () => {
             <Typography variant="h5" gutterBottom>
               Schedule (Weekly)
             </Typography>
-            {patientInfo.schedule.map((entry, index) => (
-              <Box key={index} sx={{ marginBottom: 2 }}>
-                <Typography variant="body1">
-                  <strong>
-                    {entry.dayofWeek.charAt(0).toUpperCase() +
-                      entry.dayofWeek.slice(1)}
-                    :
-                  </strong>{" "}
-                  {entry.time}
-                </Typography>
-              </Box>
-            ))}
+            {patientInfo.schedule.map((entry, index) => {
+              const dayNumber =
+                dayOfWeekMap[entry.dayofWeek.toLowerCase() as DayOfWeek];
+              const date = getDateOfCurrentWeek(dayNumber);
+              const formattedDate = formatDate(date);
+
+              return (
+                <Box key={index} sx={{ marginBottom: 2 }}>
+                  <Typography variant="body1">
+                    <strong>
+                      {entry.dayofWeek.charAt(0).toUpperCase() +
+                        entry.dayofWeek.slice(1)}
+                      :
+                    </strong>{" "}
+                    {entry.time} ({formattedDate})
+                  </Typography>
+                </Box>
+              );
+            })}
           </Paper>
         </Grid>
       </Grid>
