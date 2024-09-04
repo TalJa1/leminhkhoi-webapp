@@ -53,3 +53,25 @@ export type NotiAlertType = {
   title: string;
   color: SnackBarColor;
 };
+
+export interface ForPatient {
+  id: number;
+  name: string;
+  age: number;
+  phone: string;
+}
+
+export interface FilterListProps {
+  id: number;
+  used: number;
+  description: string;
+  isFinished: boolean;
+  forPatient: ForPatient[];
+}
+
+export interface ProgressingButtonProps {
+  loading: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+  [x: string]: any; // To accept any other props for the Button component
+}

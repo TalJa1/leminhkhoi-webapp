@@ -37,6 +37,7 @@ import dayjs from "dayjs";
 import { MobileTimePicker } from "@mui/x-date-pickers";
 import SearchIcon from "@mui/icons-material/Search";
 import NotiAlert from "../NotiAlert";
+import { useNavigate } from "react-router-dom";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -57,8 +58,12 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const DoctorManagementComponent = () => {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [isModify, setIsModify] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [listPatientData, setListPatientData] =
+    useState<Patient[]>(patientData);
   const [userDialog, setUserDialog] = useState<Patient>({
     id: -1,
     name: "",
@@ -115,7 +120,7 @@ const DoctorManagementComponent = () => {
     setSearch(event.target.value);
   };
 
-  const filteredPatients = patientData.filter(
+  const filteredPatients = listPatientData.filter(
     (patient) =>
       patient.name.toLowerCase().includes(search.toLowerCase()) ||
       patient.phone.includes(search)
@@ -128,6 +133,16 @@ const DoctorManagementComponent = () => {
   return (
     <React.Fragment>
       <Box>
+        <Button
+          variant="text"
+          color="primary"
+          onClick={() => {
+            navigate("/patientaddition");
+          }}
+          sx={{ mr: 1 }}
+        >
+          Add
+        </Button>
         <Paper
           component="form"
           sx={{

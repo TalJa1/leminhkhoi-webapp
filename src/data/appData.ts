@@ -186,3 +186,90 @@ export const daysOfWeek = [
   "Saturday",
   "Sunday",
 ];
+
+export const filterListData = [
+  {
+    id: 1,
+    used: 5,
+    description: "HEPA filter for air purification in operating rooms ",
+    isFinished: false,
+    forPatient: [
+      {
+        id: 1,
+        name: "Nguyễn Văn A",
+        age: 35,
+        phone: "0987654321",
+      },
+    ],
+  },
+  {
+    id: 2,
+    used: 3,
+    description: "Activated carbon filter for removing odors in patient rooms",
+    isFinished: true,
+    forPatient: [
+      {
+        id: 2,
+        name: "Trần Thị B",
+        age: 28,
+        phone: "0987654322",
+      },
+    ],
+  },
+  {
+    id: 3,
+    used: 7,
+    description: "UV-C light filter for sterilizing medical equipment",
+    isFinished: false,
+    forPatient: [
+      {
+        id: 3,
+        name: "Lê Văn C",
+        age: 42,
+        phone: "0987654323",
+      },
+    ],
+  },
+  {
+    id: 4,
+    used: 2,
+    description: "Reverse osmosis filter for dialysis machines",
+    isFinished: true,
+    forPatient: [
+      {
+        id: 4,
+        name: "Phạm Thị D",
+        age: 30,
+        phone: "0987654324",
+      },
+    ],
+  },
+  {
+    id: 5,
+    used: 4,
+    description: "Membrane filter for intravenous solutions",
+    isFinished: false,
+    forPatient: [
+      {
+        id: 5,
+        name: "Ngô Văn E",
+        age: 50,
+        phone: "0987654325",
+      },
+    ],
+  },
+  {
+    id: 6,
+    used: 6,
+    description: "Ceramic filter for water purification in hospitals",
+    isFinished: true,
+    forPatient: [
+      {
+        id: 6,
+        name: "Đỗ Thị F",
+        age: 45,
+        phone: "0987654326",
+      },
+    ],
+  },
+];
