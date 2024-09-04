@@ -134,7 +134,7 @@ const DoctorManagementComponent = () => {
     <React.Fragment>
       <Box>
         <Button
-          variant="contained"
+          variant="text"
           color="primary"
           onClick={() => {
             navigate("/patientaddition");

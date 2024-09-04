@@ -34,6 +34,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { useNavigate } from "react-router-dom";
+import ProgressingButton from "../ProgressingButton";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -54,6 +55,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const DoctorFilterManagement = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [isModify, setIsModify] = useState(false);
@@ -144,19 +146,23 @@ const DoctorFilterManagement = () => {
     }));
   };
 
+  const [loading, setLoading] = useState(false);
+
+  const handleClick = () => {
+    setLoading(true);
+    // Simulate an async operation
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+    // navigate("/filteraddition");
+  };
+
   return (
     <React.Fragment>
       <Box>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            navigate("/filteraddition");
-          }}
-          sx={{ mr: 1 }}
-        >
+        <ProgressingButton loading={loading} onClick={handleClick}>
           Add
-        </Button>
+        </ProgressingButton>
         <Paper
           component="form"
           sx={{

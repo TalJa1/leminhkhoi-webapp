@@ -68,3 +68,10 @@ export interface FilterListProps {
   isFinished: boolean;
   forPatient: ForPatient[];
 }
+
+export interface ProgressingButtonProps {
+  loading: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+  [x: string]: any; // To accept any other props for the Button component
+}
