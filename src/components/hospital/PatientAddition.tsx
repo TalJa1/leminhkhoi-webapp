@@ -7,9 +7,11 @@ import dayjs, { Dayjs } from "dayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useNavigate } from "react-router-dom";
+import ProgressingButton from "../ProgressingButton";
 
 const PatientAddition: React.FC = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [patientData, setPatientData] = useState<Patient>({
     id: 0,
     name: "",
@@ -68,7 +70,6 @@ const PatientAddition: React.FC = () => {
       phone.trim() !== "" &&
       age > 0 &&
       filterInfo.id > 0 &&
-      filterInfo.used > 0 &&
       schedule.length > 0
     );
   };
@@ -150,14 +151,6 @@ const PatientAddition: React.FC = () => {
           onChange={handleFilterInfoChange}
           fullWidth
         />
-        <TextField
-          label="Used"
-          name="used"
-          type="number"
-          value={patientData.filterInfo.used}
-          onChange={handleFilterInfoChange}
-          fullWidth
-        />
         <Typography variant="h6" component="h2" gutterBottom>
           Schedule
         </Typography>
@@ -184,14 +177,17 @@ const PatientAddition: React.FC = () => {
             </LocalizationProvider>
           </Box>
         ))}
-        <Button
-          type="submit"
+        <ProgressingButton
+          onClick={() => {
+            if (!isFormValid()) return;
+            setLoading(true);
+            setTimeout(() => setLoading(false), 2000);
+          }}
           variant="contained"
-          color="primary"
-          disabled={!isFormValid()}
+          loading={loading}
         >
           Add Patient
-        </Button>
+        </ProgressingButton>
       </Box>
     </Box>
   );

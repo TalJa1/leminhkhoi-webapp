@@ -74,6 +74,14 @@ export interface ProgressingButtonProps {
   onClick: () => void;
   children: React.ReactNode;
   [x: string]: any; // To accept any other props for the Button component
+  variant?: "text" | "outlined" | "contained";
 }
 
-export type DayOfWeek = 'sunday' | 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday';
+export type DayOfWeek =
+  | "sunday"
+  | "monday"
+  | "tuesday"
+  | "wednesday"
+  | "thursday"
+  | "friday"
+  | "saturday";
