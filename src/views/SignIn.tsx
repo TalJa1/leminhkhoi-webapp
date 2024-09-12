@@ -13,7 +13,8 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { userAccounts } from "../data/appData";
+import userAPI from "../apis/userAPI";
+import { Account } from "../services/typeProps";
 
 function Copyright(props: any) {
   return (
@@ -92,27 +93,42 @@ export default function SignIn() {
 
     // Email and password are valid
     if (isEmailValid && isPasswordValid) {
-      const account = userAccounts.find(
-        (account) => account.email === email && account.password === password
-      );
+      userAPI
+        .getUsers()
+        .then((res) => {
+          console.log("Response data:", res.data);
 
-      if (!account) {
-        setEmailError("Invalid email or password");
-        setPasswordError("Invalid email or password");
-        return;
-      }
+          if (!Array.isArray(res.data.data)) {
+            throw new Error("Response data is not an array");
+          }
+          const listAccount: Account[] = res.data.data;
 
-      sessionStorage.setItem(
-        "userData",
-        JSON.stringify({
-          accountID: account.accountID,
-          email: email,
-          password: password,
-          role: account.role,
+          const account = listAccount.find(
+            (account) =>
+              account.email === email && account.password === password
+          );
+
+          console.log("account", account);
+
+          if (!account) {
+            setEmailError("Invalid email or password");
+            setPasswordError("Invalid email or password");
+            return;
+          }
+          sessionStorage.setItem(
+            "userData",
+            JSON.stringify({
+              accountID: account.accountID,
+              email: email,
+              role: account.role,
+            })
+          );
+
+          navigate("/home");
         })
-      );
-
-      navigate("/home");
+        .catch((err) => {
+          console.log("err", err);
+        });
     }
   };
 

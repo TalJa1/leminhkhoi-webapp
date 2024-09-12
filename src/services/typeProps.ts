@@ -2,10 +2,12 @@ import { TransitionProps } from "@mui/material/transitions";
 import React from "react";
 
 export interface Account {
-  accountID: number;
-  email: string;
-  password: string;
-  role: string;
+  _id: string
+  accountID: string
+  email: string
+  password: string
+  role: string
+  __v: number
 }
 
 export interface MainLayoutProps {
