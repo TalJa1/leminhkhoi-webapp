@@ -13,16 +13,22 @@ const PatientAddition: React.FC = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [patientData, setPatientData] = useState<Patient>({
-    id: 0,
+    _id: "",
+    id: "",
+    __v: 0,
     name: "",
     age: 0,
     phone: "",
-    filterInfo: {
-      id: 0,
-      used: 0,
-      isFinished: false,
-    },
     schedule: [],
+    filterInfo: {
+      id: "",
+      used: 0,
+      description: "",
+      isFinished: false,
+      forPatient: [],
+      _id: "",
+      __v: 0,
+    },
   });
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -46,9 +52,13 @@ const PatientAddition: React.FC = () => {
 
   const handleScheduleChange = (day: string, time: Dayjs | null) => {
     setPatientData((prev) => {
-      const newSchedule = prev.schedule.filter((s) => s.dayofWeek !== day);
+      const newSchedule = prev.schedule.filter((s) => s.dayOfWeek !== day);
       if (time && time.format("HH:mm") !== "") {
-        newSchedule.push({ time: time.format("HH:mm"), dayofWeek: day });
+        newSchedule.push({
+          time: time.format("HH:mm"),
+          dayOfWeek: day,
+          _id: "",
+        });
       }
       return {
         ...prev,
@@ -69,7 +79,7 @@ const PatientAddition: React.FC = () => {
       name.trim() !== "" &&
       phone.trim() !== "" &&
       age > 0 &&
-      filterInfo.id > 0 &&
+      Number(filterInfo.id) > 0 &&
       schedule.length > 0
     );
   };
@@ -164,9 +174,9 @@ const PatientAddition: React.FC = () => {
                 <MobileTimePicker
                   label={`Time for ${day}`}
                   value={
-                    patientData.schedule.find((s) => s.dayofWeek === day)?.time
+                    patientData.schedule.find((s) => s.dayOfWeek === day)?.time
                       ? dayjs(
-                          patientData.schedule.find((s) => s.dayofWeek === day)
+                          patientData.schedule.find((s) => s.dayOfWeek === day)
                             ?.time
                         )
                       : null

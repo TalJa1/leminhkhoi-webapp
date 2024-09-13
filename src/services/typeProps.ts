@@ -2,12 +2,12 @@ import { TransitionProps } from "@mui/material/transitions";
 import React from "react";
 
 export interface Account {
-  _id: string
-  accountID: string
-  email: string
-  password: string
-  role: string
-  __v: number
+  _id: string;
+  accountID: string;
+  email: string;
+  password: string;
+  role: string;
+  __v: number;
 }
 
 export interface MainLayoutProps {
@@ -19,22 +19,29 @@ export interface MainLayoutProps {
 
 export interface Schedule {
   time: string;
-  dayofWeek: string;
+  dayOfWeek: string;
+  _id: string;
 }
 
 export interface FilterInfo {
-  id: number;
+  _id: string;
+  id: string;
   used: number;
+  description: string;
   isFinished: boolean;
+  forPatient: string[];
+  __v: number;
 }
 
 export interface Patient {
-  id: number;
+  _id: string;
+  id: string;
   name: string;
   age: number;
   phone: string;
-  filterInfo: FilterInfo;
   schedule: Schedule[];
+  __v: number;
+  filterInfo: FilterInfo;
 }
 
 export interface SnackbarProps {
