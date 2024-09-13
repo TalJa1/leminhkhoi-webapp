@@ -1,5 +1,11 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
-import { Box, TextField, Button, Typography } from "@mui/material";
+import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  Autocomplete,
+} from "@mui/material";
 import { Patient } from "../../services/typeProps";
 import { daysOfWeek } from "../../data/appData";
 import { LocalizationProvider, MobileTimePicker } from "@mui/x-date-pickers";
@@ -8,10 +14,12 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useNavigate } from "react-router-dom";
 import ProgressingButton from "../ProgressingButton";
+import filterAPI from "../../apis/filterAPI";
 
 const PatientAddition: React.FC = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [filterIDlist, setFilterIDlist] = useState([]);
   const [patientData, setPatientData] = useState<Patient>({
     _id: "",
     id: "",
@@ -31,22 +39,33 @@ const PatientAddition: React.FC = () => {
     },
   });
 
+  // const addPatient = {
+  //   name: "",
+  //   age: 0,
+  //   phone: "",
+  //   schedule: [{ time: "16:20", dayOfWeek: "Monday" }],
+  //   FilterID: 1,
+  // };
+
+  useEffect(() => {
+    filterAPI
+      .getFilters()
+      .then((res) => {
+        const unfinishedFilters = res.data.data.filter(
+          (f: { isFinished: boolean }) => !f.isFinished
+        );
+        setFilterIDlist(unfinishedFilters.map((f: { id: string }) => f.id));
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setPatientData((prev) => ({
       ...prev,
       [name]: value,
-    }));
-  };
-
-  const handleFilterInfoChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setPatientData((prev) => ({
-      ...prev,
-      filterInfo: {
-        ...prev.filterInfo,
-        [name]: value,
-      },
     }));
   };
 
@@ -154,12 +173,28 @@ const PatientAddition: React.FC = () => {
         <Typography variant="h6" component="h2" gutterBottom>
           Filter Info
         </Typography>
-        <TextField
+        {/* <TextField
           label="Filter ID"
           name="id"
           value={patientData.filterInfo.id}
           onChange={handleFilterInfoChange}
           fullWidth
+        /> */}
+        <Autocomplete
+          disablePortal
+          options={filterIDlist}
+          fullWidth
+          value={patientData.filterInfo.id}
+          onChange={(e, value) => {
+            setPatientData((prev) => ({
+              ...prev,
+              filterInfo: {
+                ...prev.filterInfo,
+                id: value ?? "",
+              },
+            }));
+          }}
+          renderInput={(params) => <TextField {...params} label="Filter ID" />}
         />
         <Typography variant="h6" component="h2" gutterBottom>
           Schedule
