@@ -273,3 +273,5 @@ export const filterListData = [
     ],
   },
 ];
+
+export const roles = ["Doctor", "Nurse", "Patient"];
