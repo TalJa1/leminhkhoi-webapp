@@ -7,10 +7,13 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import { Chip, IconButton, InputBase } from "@mui/material";
+import patientAPI from "../../apis/patientAPI";
+import { Patient } from "../../services/typeProps";
+import dayjs from "dayjs";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -59,15 +62,50 @@ const formattedDate = formatDate(today);
 
 const initialRows = [
   createData("Nguyễn Văn A", "0123456789", 1, 30, "08:00", formattedDate),
-  createData("Trần Thị B", "0987654321", 2, 35, "09:00", formattedDate),
-  createData("Lê Văn C", "0912345678", 3, 45, "10:00", formattedDate),
-  createData("Phạm Thị D", "0908765432", 4, 31, "11:00", formattedDate),
-  createData("Hoàng Văn E", "0934567890", 5, 30, "12:00", formattedDate),
 ];
 
 const DoctorHomeComponent = () => {
   const [rows, setRows] = useState(initialRows);
   const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    const fetchPatients = async () => {
+      try {
+        const res = await patientAPI.getPatients();
+        const patients: Patient[] = res.data.data;
+
+        // Get today's day of the week
+        const today = dayjs().format("dddd").toLowerCase(); // e.g., "friday"
+
+        // Filter and transform patients based on today's day of the week
+        const newRows = patients
+          .filter((patient) =>
+            patient.schedule.some(
+              (schedule) => schedule.dayOfWeek.toLowerCase() === today
+            )
+          )
+          .map((patient) => {
+            const schedule = patient.schedule.find(
+              (schedule) => schedule.dayOfWeek.toLowerCase() === today
+            );
+            return createData(
+              patient.name,
+              patient.phone,
+              Number(patient.filterInfo.id),
+              patient.age,
+              schedule ? schedule.time : "",
+              formattedDate
+            );
+          });
+
+        setRows(newRows);
+      } catch (error) {
+        console.error("Failed to fetch patients", error);
+      }
+    };
+
+    fetchPatients();
+  }, []);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;

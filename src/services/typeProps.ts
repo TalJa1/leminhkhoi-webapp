@@ -86,3 +86,12 @@ export type DayOfWeek =
   | "thursday"
   | "friday"
   | "saturday";
+
+export interface PatientRow {
+  name: string;
+  phone: string;
+  id: number;
+  age: number;
+  time: string;
+  date: string;
+}
