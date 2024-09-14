@@ -1,5 +1,11 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
-import { Box, TextField, Button, Typography } from "@mui/material";
+import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  Autocomplete,
+} from "@mui/material";
 import { Patient } from "../../services/typeProps";
 import { daysOfWeek } from "../../data/appData";
 import { LocalizationProvider, MobileTimePicker } from "@mui/x-date-pickers";
@@ -7,21 +13,53 @@ import dayjs, { Dayjs } from "dayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useNavigate } from "react-router-dom";
+import ProgressingButton from "../ProgressingButton";
+import filterAPI from "../../apis/filterAPI";
 
 const PatientAddition: React.FC = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [filterIDlist, setFilterIDlist] = useState([]);
   const [patientData, setPatientData] = useState<Patient>({
-    id: 0,
+    _id: "",
+    id: "",
+    __v: 0,
     name: "",
     age: 0,
     phone: "",
-    filterInfo: {
-      id: 0,
-      used: 0,
-      isFinished: false,
-    },
     schedule: [],
+    filterInfo: {
+      id: "",
+      used: 0,
+      description: "",
+      isFinished: false,
+      forPatient: [],
+      _id: "",
+      __v: 0,
+    },
   });
+
+  // const addPatient = {
+  //   name: "",
+  //   age: 0,
+  //   phone: "",
+  //   schedule: [{ time: "16:20", dayOfWeek: "Monday" }],
+  //   FilterID: 1,
+  // };
+
+  useEffect(() => {
+    filterAPI
+      .getFilters()
+      .then((res) => {
+        const unfinishedFilters = res.data.data.filter(
+          (f: { isFinished: boolean }) => !f.isFinished
+        );
+        setFilterIDlist(unfinishedFilters.map((f: { id: string }) => f.id));
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -31,22 +69,15 @@ const PatientAddition: React.FC = () => {
     }));
   };
 
-  const handleFilterInfoChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setPatientData((prev) => ({
-      ...prev,
-      filterInfo: {
-        ...prev.filterInfo,
-        [name]: value,
-      },
-    }));
-  };
-
   const handleScheduleChange = (day: string, time: Dayjs | null) => {
     setPatientData((prev) => {
-      const newSchedule = prev.schedule.filter((s) => s.dayofWeek !== day);
+      const newSchedule = prev.schedule.filter((s) => s.dayOfWeek !== day);
       if (time && time.format("HH:mm") !== "") {
-        newSchedule.push({ time: time.format("HH:mm"), dayofWeek: day });
+        newSchedule.push({
+          time: time.format("HH:mm"),
+          dayOfWeek: day,
+          _id: "",
+        });
       }
       return {
         ...prev,
@@ -67,8 +98,7 @@ const PatientAddition: React.FC = () => {
       name.trim() !== "" &&
       phone.trim() !== "" &&
       age > 0 &&
-      filterInfo.id > 0 &&
-      filterInfo.used > 0 &&
+      Number(filterInfo.id) > 0 &&
       schedule.length > 0
     );
   };
@@ -143,20 +173,28 @@ const PatientAddition: React.FC = () => {
         <Typography variant="h6" component="h2" gutterBottom>
           Filter Info
         </Typography>
-        <TextField
+        {/* <TextField
           label="Filter ID"
           name="id"
           value={patientData.filterInfo.id}
           onChange={handleFilterInfoChange}
           fullWidth
-        />
-        <TextField
-          label="Used"
-          name="used"
-          type="number"
-          value={patientData.filterInfo.used}
-          onChange={handleFilterInfoChange}
+        /> */}
+        <Autocomplete
+          disablePortal
+          options={filterIDlist}
           fullWidth
+          value={patientData.filterInfo.id}
+          onChange={(e, value) => {
+            setPatientData((prev) => ({
+              ...prev,
+              filterInfo: {
+                ...prev.filterInfo,
+                id: value ?? "",
+              },
+            }));
+          }}
+          renderInput={(params) => <TextField {...params} label="Filter ID" />}
         />
         <Typography variant="h6" component="h2" gutterBottom>
           Schedule
@@ -171,9 +209,9 @@ const PatientAddition: React.FC = () => {
                 <MobileTimePicker
                   label={`Time for ${day}`}
                   value={
-                    patientData.schedule.find((s) => s.dayofWeek === day)?.time
+                    patientData.schedule.find((s) => s.dayOfWeek === day)?.time
                       ? dayjs(
-                          patientData.schedule.find((s) => s.dayofWeek === day)
+                          patientData.schedule.find((s) => s.dayOfWeek === day)
                             ?.time
                         )
                       : null
@@ -184,14 +222,17 @@ const PatientAddition: React.FC = () => {
             </LocalizationProvider>
           </Box>
         ))}
-        <Button
-          type="submit"
+        <ProgressingButton
+          onClick={() => {
+            if (!isFormValid()) return;
+            setLoading(true);
+            setTimeout(() => setLoading(false), 2000);
+          }}
           variant="contained"
-          color="primary"
-          disabled={!isFormValid()}
+          loading={loading}
         >
           Add Patient
-        </Button>
+        </ProgressingButton>
       </Box>
     </Box>
   );

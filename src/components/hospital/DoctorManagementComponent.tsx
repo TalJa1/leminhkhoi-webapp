@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -24,7 +24,7 @@ import {
   Chip,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { daysOfWeek, patientData } from "../../data/appData";
+import { daysOfWeek } from "../../data/appData";
 import { TransitionProps } from "@mui/material/transitions";
 import CloseIcon from "@mui/icons-material/Close";
 import { Patient, SnackBarColor } from "../../services/typeProps";
@@ -38,6 +38,7 @@ import { MobileTimePicker } from "@mui/x-date-pickers";
 import SearchIcon from "@mui/icons-material/Search";
 import NotiAlert from "../NotiAlert";
 import { useNavigate } from "react-router-dom";
+import patientAPI from "../../apis/patientAPI";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -62,32 +63,51 @@ const DoctorManagementComponent = () => {
   const [open, setOpen] = useState(false);
   const [isModify, setIsModify] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [listPatientData, setListPatientData] =
-    useState<Patient[]>(patientData);
+  const [listPatientData, setListPatientData] = useState<Patient[]>(
+    [] as Patient[]
+  );
   const [userDialog, setUserDialog] = useState<Patient>({
-    id: -1,
+    id: "",
     name: "",
-    age: -1,
+    age: 0,
     phone: "",
-    filterInfo: {
-      id: -1,
-      used: -1,
-      isFinished: false,
-    },
     schedule: [
       {
         time: "",
-        dayofWeek: "",
+        dayOfWeek: "",
+        _id: "",
       },
     ],
+    filterInfo: {
+      _id: "",
+      id: "",
+      used: 0,
+      description: "",
+      isFinished: false,
+      forPatient: [],
+      __v: 0,
+    },
+    _id: "",
+    __v: 0,
   });
   const [search, setSearch] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackBarTitle, setSnackBarTitle] = useState<string>("");
   const [snackBarColor, setSnackBarColor] = useState<SnackBarColor>("success");
 
-  const handleClickOpen = (id: number) => {
-    const patient = patientData.find((p) => p.id === id);
+  useEffect(() => {
+    patientAPI
+      .getPatients()
+      .then((res) => {
+        setListPatientData(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const handleClickOpen = (id: string) => {
+    const patient = listPatientData.find((p) => p.id === id);
     if (patient) {
       setUserDialog(patient);
     }
@@ -120,11 +140,15 @@ const DoctorManagementComponent = () => {
     setSearch(event.target.value);
   };
 
-  const filteredPatients = listPatientData.filter(
-    (patient) =>
-      patient.name.toLowerCase().includes(search.toLowerCase()) ||
-      patient.phone.includes(search)
-  );
+  const filteredPatients = Array.isArray(listPatientData)
+    ? listPatientData.filter(
+        (patient) =>
+          patient.name.toLowerCase().includes(search.toLowerCase()) ||
+          patient.phone.includes(search)
+      )
+    : [];
+
+  console.log("filteredPatients", filteredPatients);
 
   const capitalizeString = (str: string) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -324,7 +348,7 @@ const DoctorManagementComponent = () => {
                             <Typography
                               sx={{ fontSize: "1rem", fontWeight: "bold" }}
                             >
-                              {capitalizeString(entry.dayofWeek)}
+                              {capitalizeString(entry.dayOfWeek)}
                             </Typography>
                           </TableCell>
                           <TableCell sx={{ textAlign: "center", width: "50%" }}>
@@ -383,7 +407,7 @@ const DoctorManagementComponent = () => {
                   {daysOfWeek.map((day) => {
                     const scheduleEntry = userDialog.schedule.find(
                       (entry) =>
-                        entry.dayofWeek.toLowerCase() === day.toLowerCase()
+                        entry.dayOfWeek.toLowerCase() === day.toLowerCase()
                     );
                     const isScheduled = !!scheduleEntry;
                     return (
@@ -418,7 +442,7 @@ const DoctorManagementComponent = () => {
                             setUserDialog((prev) => {
                               const isScheduled = prev.schedule.some(
                                 (entry) =>
-                                  entry.dayofWeek.toLowerCase() ===
+                                  entry.dayOfWeek.toLowerCase() ===
                                   day.toLowerCase()
                               );
                               return {
@@ -426,12 +450,16 @@ const DoctorManagementComponent = () => {
                                 schedule: isScheduled
                                   ? prev.schedule.filter(
                                       (entry) =>
-                                        entry.dayofWeek.toLowerCase() !==
+                                        entry.dayOfWeek.toLowerCase() !==
                                         day.toLowerCase()
                                     )
                                   : [
                                       ...prev.schedule,
-                                      { time: "00:00", dayofWeek: day },
+                                      {
+                                        time: "00:00",
+                                        dayOfWeek: day,
+                                        _id: "",
+                                      },
                                     ],
                               };
                             });
@@ -455,7 +483,7 @@ const DoctorManagementComponent = () => {
                                   setUserDialog((prev) => ({
                                     ...prev,
                                     schedule: prev.schedule.map((entry) =>
-                                      entry.dayofWeek.toLowerCase() ===
+                                      entry.dayOfWeek.toLowerCase() ===
                                       day.toLowerCase()
                                         ? {
                                             ...entry,

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -24,10 +24,9 @@ import {
   TextField,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { filterListData } from "../../data/appData";
 import { TransitionProps } from "@mui/material/transitions";
 import CloseIcon from "@mui/icons-material/Close";
-import { FilterListProps, SnackBarColor } from "../../services/typeProps";
+import { FilterInfo, SnackBarColor } from "../../services/typeProps";
 import SearchIcon from "@mui/icons-material/Search";
 import NotiAlert from "../NotiAlert";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -35,6 +34,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { useNavigate } from "react-router-dom";
 import ProgressingButton from "../ProgressingButton";
+import filterAPI from "../../apis/filterAPI";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -60,30 +60,34 @@ const DoctorFilterManagement = () => {
   const [open, setOpen] = useState(false);
   const [isModify, setIsModify] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [filterData, setFilterData] =
-    useState<FilterListProps[]>(filterListData);
-  const [selectedFilter, setSelectedFilter] = useState<FilterListProps>({
-    id: -1,
+  const [filterData, setFilterData] = useState<FilterInfo[]>([]);
+  const [selectedFilter, setSelectedFilter] = useState<FilterInfo>({
+    _id: "",
+    id: "",
     used: 0,
-    description: "Filter 1 description",
+    description: "",
     isFinished: false,
-    forPatient: [
-      {
-        id: 1,
-        name: "Nguyễn Văn A",
-        age: 0,
-        phone: "0987654321",
-      },
-    ],
+    forPatient: [],
+    __v: 0,
   });
-
   const [search, setSearch] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackBarTitle, setSnackBarTitle] = useState<string>("");
   const [snackBarColor, setSnackBarColor] = useState<SnackBarColor>("success");
 
-  const handleClickOpen = (id: number) => {
-    const filter = filterListData.find((p) => p.id === id);
+  useEffect(() => {
+    filterAPI
+      .getFilters()
+      .then((res) => {
+        setFilterData(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const handleClickOpen = (id: string) => {
+    const filter = filterData.find((p) => p.id === id);
     if (filter) {
       setSelectedFilter(filter);
     }
@@ -117,9 +121,8 @@ const DoctorFilterManagement = () => {
   };
 
   const filteredFilters = filterData.filter((filter) => {
-    const searchNumber = Number(search);
     return (
-      filter.id === searchNumber ||
+      filter.id === search ||
       filter.description.toLowerCase().includes(search.toLowerCase())
     );
   });

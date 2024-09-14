@@ -6,10 +6,13 @@ const ProgressingButton: React.FC<ProgressingButtonProps> = ({
   loading,
   onClick,
   children,
+  variant,
+  isFormValid,
   ...props
 }) => {
   return (
     <Button
+      variant={variant ?? "text"}
       onClick={onClick}
       disabled={loading}
       {...props}
