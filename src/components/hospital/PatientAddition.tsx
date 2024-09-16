@@ -64,21 +64,32 @@ const PatientAddition: React.FC = () => {
 
   const handleScheduleChange = (day: string, time: Dayjs | null) => {
     setPatientData((prev) => {
-      const newSchedule = prev.schedule.filter((s) => s.dayOfWeek !== day);
-      if (time && time.format("HH:mm") !== "") {
+      const dayOfWeek = day.toLowerCase();
+      const newSchedule = prev.schedule.map((s) =>
+        s.dayOfWeek === dayOfWeek
+          ? { ...s, time: time ? time.format("HH:mm") : "" }
+          : s
+      );
+
+      // If the dayOfWeek does not exist in the schedule, add a new entry
+      if (
+        !newSchedule.some((s) => s.dayOfWeek === dayOfWeek) &&
+        time &&
+        time.format("HH:mm") !== ""
+      ) {
         newSchedule.push({
           time: time.format("HH:mm"),
-          dayOfWeek: day,
+          dayOfWeek: dayOfWeek,
           _id: "",
         });
       }
+
       return {
         ...prev,
         schedule: newSchedule,
       };
     });
   };
-
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle form submission logic here
@@ -104,8 +115,11 @@ const PatientAddition: React.FC = () => {
       name: patientData.name,
       age: patientData.age,
       phone: patientData.phone,
-      schedule: patientData.schedule,
-      FilterID: patientData.filterInfo.id,
+      schedule: patientData.schedule.map(({ dayOfWeek, time }) => ({
+        dayOfWeek,
+        time,
+      })),
+      filterID: patientData.filterInfo.id,
     };
     patientAPI
       .createPatient(addPatient)

@@ -7,7 +7,7 @@ const patientAPI = {
   },
   createPatient: async (data: any) => {
     const url = "/newpatient";
-    return await axiosClient.post(url, { data });
+    return await axiosClient.post(url, data);
   },
 };
 
