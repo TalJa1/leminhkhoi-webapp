@@ -153,9 +153,25 @@ const DoctorFilterManagement = () => {
 
   const handleClick = () => {
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
+
+    filterAPI
+      .createFilter()
+      .then((res) => {
+        setSnackBarTitle("Add successfully");
+        setSnackBarColor("success");
+        setLoading(false);
+        setSnackbarOpen(true);
+      })
+      .catch((err) => {
+        setSnackBarTitle("Add failed");
+        setSnackBarColor("error");
+        setLoading(false);
+        setSnackbarOpen(true);
+      });
+
+    // setTimeout(() => {
+    //   setLoading(false);
+    // }, 2000);
   };
 
   return (

@@ -15,6 +15,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useNavigate } from "react-router-dom";
 import ProgressingButton from "../ProgressingButton";
 import filterAPI from "../../apis/filterAPI";
+import patientAPI from "../../apis/patientAPI";
 
 const PatientAddition: React.FC = () => {
   const navigate = useNavigate();
@@ -38,14 +39,6 @@ const PatientAddition: React.FC = () => {
       __v: 0,
     },
   });
-
-  // const addPatient = {
-  //   name: "",
-  //   age: 0,
-  //   phone: "",
-  //   schedule: [{ time: "16:20", dayOfWeek: "Monday" }],
-  //   FilterID: 1,
-  // };
 
   useEffect(() => {
     filterAPI
@@ -71,21 +64,32 @@ const PatientAddition: React.FC = () => {
 
   const handleScheduleChange = (day: string, time: Dayjs | null) => {
     setPatientData((prev) => {
-      const newSchedule = prev.schedule.filter((s) => s.dayOfWeek !== day);
-      if (time && time.format("HH:mm") !== "") {
+      const dayOfWeek = day.toLowerCase();
+      const newSchedule = prev.schedule.map((s) =>
+        s.dayOfWeek === dayOfWeek
+          ? { ...s, time: time ? time.format("HH:mm") : "" }
+          : s
+      );
+
+      // If the dayOfWeek does not exist in the schedule, add a new entry
+      if (
+        !newSchedule.some((s) => s.dayOfWeek === dayOfWeek) &&
+        time &&
+        time.format("HH:mm") !== ""
+      ) {
         newSchedule.push({
           time: time.format("HH:mm"),
-          dayOfWeek: day,
+          dayOfWeek: dayOfWeek,
           _id: "",
         });
       }
+
       return {
         ...prev,
         schedule: newSchedule,
       };
     });
   };
-
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle form submission logic here
@@ -101,6 +105,33 @@ const PatientAddition: React.FC = () => {
       Number(filterInfo.id) > 0 &&
       schedule.length > 0
     );
+  };
+
+  const handleAddPatient = () => {
+    if (!isFormValid()) return;
+    setLoading(true);
+    // Add patient logic here
+    const addPatient = {
+      name: patientData.name,
+      age: patientData.age,
+      phone: patientData.phone,
+      schedule: patientData.schedule.map(({ dayOfWeek, time }) => ({
+        dayOfWeek,
+        time,
+      })),
+      filterID: patientData.filterInfo.id,
+    };
+    patientAPI
+      .createPatient(addPatient)
+      .then((res) => {
+        console.log("Add Patient Response:", res.data);
+        setLoading(false);
+        // navigate(-1);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
   };
 
   return (
@@ -223,11 +254,7 @@ const PatientAddition: React.FC = () => {
           </Box>
         ))}
         <ProgressingButton
-          onClick={() => {
-            if (!isFormValid()) return;
-            setLoading(true);
-            setTimeout(() => setLoading(false), 2000);
-          }}
+          onClick={() => handleAddPatient()}
           variant="contained"
           loading={loading}
         >
