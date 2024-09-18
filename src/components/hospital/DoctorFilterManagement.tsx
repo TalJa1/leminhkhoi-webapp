@@ -79,11 +79,7 @@ const DoctorFilterManagement = () => {
   //   used: 0,
   //   description: "",
   //   isFinished: false,
-  //   forPatient: [
-  //     {
-  //       id: "",
-  //     },
-  //   ],
+  //   forPatient: [""], // string as patient id
   // };
 
   useEffect(() => {
@@ -179,6 +175,13 @@ const DoctorFilterManagement = () => {
         setLoading(false);
         setSnackbarOpen(true);
       });
+  };
+
+  const handleCancelClick = (patientId: string) => {
+    setSelectedFilter((prev) => ({
+      ...prev,
+      forPatient: prev.forPatient.filter((patient) => patient.id !== patientId),
+    }));
   };
 
   return (
@@ -415,6 +418,9 @@ const DoctorFilterManagement = () => {
                   <TableCell sx={{ color: "white" }}>Name</TableCell>
                   <TableCell sx={{ color: "white" }}>Age</TableCell>
                   <TableCell sx={{ color: "white" }}>Phone</TableCell>
+                  {isModify && (
+                    <TableCell sx={{ color: "white" }}>Action</TableCell>
+                  )}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -424,6 +430,17 @@ const DoctorFilterManagement = () => {
                     <TableCell>{patient.name}</TableCell>
                     <TableCell>{patient.age}</TableCell>
                     <TableCell>{patient.phone}</TableCell>
+                    {isModify && (
+                      <TableCell>
+                        <Button
+                          variant="contained"
+                          color="error"
+                          onClick={() => handleCancelClick(patient.id)}
+                        >
+                          Remove
+                        </Button>
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))}
               </TableBody>

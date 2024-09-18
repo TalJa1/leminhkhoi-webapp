@@ -11,7 +11,7 @@ const patientAPI = {
   },
   editPatient: async (data: any, patientId: number) => {
     const url = `/patient/${patientId}`;
-    return await axiosClient.put(url, data);
+    return await axiosClient.post(url, data);
   },
 };
 
