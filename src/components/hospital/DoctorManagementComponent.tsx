@@ -99,22 +99,6 @@ const DoctorManagementComponent = () => {
   const [snackBarColor, setSnackBarColor] = useState<SnackBarColor>("success");
   const [options, setOptions] = useState<FilterInfo[]>([]);
 
-  // const editPatientBody = {
-  // name: "",
-  // age: 0,
-  // phone: "",
-  //   schedule: [
-  //     {
-  //       time: "",
-  //       dayOfWeek: "",
-  //       _id: "",
-  //     },
-  //   ],
-  //   filterInfo: {
-  //     id: "",
-  //   },
-  // };
-
   useEffect(() => {
     patientAPI
       .getPatients()
@@ -140,12 +124,32 @@ const DoctorManagementComponent = () => {
   };
 
   const handleSave = () => {
-    setSnackBarTitle("Save successfully");
-    setSnackBarColor("success");
-    setSnackbarOpen(true);
+    const editPatientBody = {
+      name: userDialog.name,
+      age: userDialog.age,
+      phone: userDialog.phone,
+      schedule: userDialog.schedule.map(({ _id, ...rest }) => rest),
+      filterInfo: {
+        id: userDialog.filterInfo.id,
+      },
+    };
 
-    setIsModify(false);
-    setOpen(false);
+    patientAPI
+      .editPatient(editPatientBody, parseInt(userDialog.id))
+      .then((res) => {
+        setSnackBarTitle("Save successfully");
+        setSnackBarColor("success");
+        setSnackbarOpen(true);
+        setIsModify(false);
+        setOpen(false);
+      })
+      .catch((err) => {
+        setSnackBarTitle("Save failed");
+        setSnackBarColor("error");
+        setSnackbarOpen(true);
+        setIsModify(false);
+        setOpen(false);
+      });
   };
 
   const handleCloseSnackbar = () => {
@@ -187,6 +191,14 @@ const DoctorManagementComponent = () => {
         console.log(err);
       });
   }, []);
+
+  const handleInputChange =
+    (field: keyof Patient) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      setUserDialog((prev) => ({
+        ...prev,
+        [field]: event.target.value,
+      }));
+    };
 
   return (
     <React.Fragment>
@@ -325,22 +337,49 @@ const DoctorManagementComponent = () => {
               />
             </Grid>
             <Grid item xs={12} md={3} lg={3}>
-              <ListItemText
-                primary={<Typography>Name</Typography>}
-                secondary={<Typography>{userDialog.name}</Typography>}
-              />
+              {isModify ? (
+                <TextField
+                  label="Name"
+                  value={userDialog.name}
+                  onChange={handleInputChange("name")}
+                  fullWidth
+                />
+              ) : (
+                <ListItemText
+                  primary={<Typography>Name</Typography>}
+                  secondary={<Typography>{userDialog.name}</Typography>}
+                />
+              )}
             </Grid>
             <Grid item xs={12} md={3} lg={3}>
-              <ListItemText
-                primary={<Typography>Age</Typography>}
-                secondary={<Typography>{userDialog.age}</Typography>}
-              />
+              {isModify ? (
+                <TextField
+                  label="Age"
+                  value={userDialog.age}
+                  onChange={handleInputChange("age")}
+                  fullWidth
+                />
+              ) : (
+                <ListItemText
+                  primary={<Typography>Age</Typography>}
+                  secondary={<Typography>{userDialog.age}</Typography>}
+                />
+              )}
             </Grid>
             <Grid item xs={12} md={3} lg={3}>
-              <ListItemText
-                primary={<Typography>Phone</Typography>}
-                secondary={<Typography>{userDialog.phone}</Typography>}
-              />
+              {isModify ? (
+                <TextField
+                  label="Phone"
+                  value={userDialog.phone}
+                  onChange={handleInputChange("phone")}
+                  fullWidth
+                />
+              ) : (
+                <ListItemText
+                  primary={<Typography>Phone</Typography>}
+                  secondary={<Typography>{userDialog.phone}</Typography>}
+                />
+              )}
             </Grid>
           </Grid>
           <Divider />
