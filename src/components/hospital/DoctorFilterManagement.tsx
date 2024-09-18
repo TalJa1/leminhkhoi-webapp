@@ -82,7 +82,6 @@ const DoctorFilterManagement = () => {
   //   forPatient: [
   //     {
   //       id: "",
-  //       name: "",
   //     },
   //   ],
   // };

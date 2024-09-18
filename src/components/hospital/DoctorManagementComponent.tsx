@@ -22,12 +22,14 @@ import {
   Box,
   InputBase,
   Chip,
+  Autocomplete,
+  TextField,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { daysOfWeek } from "../../data/appData";
 import { TransitionProps } from "@mui/material/transitions";
 import CloseIcon from "@mui/icons-material/Close";
-import { Patient, SnackBarColor } from "../../services/typeProps";
+import { FilterInfo, Patient, SnackBarColor } from "../../services/typeProps";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -39,6 +41,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import NotiAlert from "../NotiAlert";
 import { useNavigate } from "react-router-dom";
 import patientAPI from "../../apis/patientAPI";
+import filterAPI from "../../apis/filterAPI";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -94,6 +97,7 @@ const DoctorManagementComponent = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackBarTitle, setSnackBarTitle] = useState<string>("");
   const [snackBarColor, setSnackBarColor] = useState<SnackBarColor>("success");
+  const [options, setOptions] = useState<FilterInfo[]>([]);
 
   // const editPatientBody = {
   //   schedule: [
@@ -105,8 +109,6 @@ const DoctorManagementComponent = () => {
   //   ],
   //   filterInfo: {
   //     id: "",
-  //     used: 0,
-  //     isFinished: false,
   //   },
   // };
 
@@ -163,11 +165,25 @@ const DoctorManagementComponent = () => {
       )
     : [];
 
-  console.log("filteredPatients", filteredPatients);
+  // console.log("filteredPatients", filteredPatients);
 
   const capitalizeString = (str: string) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
+
+  useEffect(() => {
+    filterAPI
+      .getFilters()
+      .then((res) => {
+        const getData: FilterInfo[] = res.data.data;
+        const filterData = getData.filter((v) => v.isFinished !== true);
+
+        setOptions(filterData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <React.Fragment>
@@ -383,12 +399,39 @@ const DoctorManagementComponent = () => {
                 <Paper sx={{ padding: 2 }}>
                   <Grid container spacing={2} sx={{ textAlign: "center" }}>
                     <Grid item xs={4}>
-                      <ListItemText
-                        primary={<Typography>Filter ID</Typography>}
-                        secondary={
-                          <Typography>{userDialog.filterInfo.id}</Typography>
-                        }
-                      />
+                      {isModify ? (
+                        <Autocomplete
+                          options={options}
+                          getOptionLabel={(option) => option.id}
+                          value={userDialog.filterInfo}
+                          isOptionEqualToValue={(option, value) => option.id === value.id}
+                          onChange={(event, newValue) => {
+                            setUserDialog((prev) => ({
+                              ...prev,
+                              filterInfo: {
+                                ...prev.filterInfo, // Preserve existing filterInfo fields
+                                id: newValue?.id || "", // Update with newValue fields
+                                description: newValue?.description || "",
+                                _id: newValue?._id || "", // Assuming newValue also has _id
+                                used: newValue?.used || 0,
+                                isFinished: newValue?.isFinished || false,
+                                forPatient: newValue?.forPatient || [],
+                                __v: newValue?.__v || 0,
+                              },
+                            }));
+                          }}
+                          renderInput={(params) => (
+                            <TextField {...params} label="Filter ID" />
+                          )}
+                        />
+                      ) : (
+                        <ListItemText
+                          primary={<Typography>Filter ID</Typography>}
+                          secondary={
+                            <Typography>{userDialog.filterInfo.id}</Typography>
+                          }
+                        />
+                      )}
                     </Grid>
                     <Grid item xs={4}>
                       <ListItemText
