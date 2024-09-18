@@ -75,6 +75,18 @@ const DoctorFilterManagement = () => {
   const [snackBarTitle, setSnackBarTitle] = useState<string>("");
   const [snackBarColor, setSnackBarColor] = useState<SnackBarColor>("success");
 
+  // const editFilterBody = {
+  //   used: 0,
+  //   description: "",
+  //   isFinished: false,
+  //   forPatient: [
+  //     {
+  //       id: "",
+  //       name: "",
+  //     },
+  //   ],
+  // };
+
   useEffect(() => {
     filterAPI
       .getFilters()
@@ -168,10 +180,6 @@ const DoctorFilterManagement = () => {
         setLoading(false);
         setSnackbarOpen(true);
       });
-
-    // setTimeout(() => {
-    //   setLoading(false);
-    // }, 2000);
   };
 
   return (

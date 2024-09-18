@@ -95,6 +95,21 @@ const DoctorManagementComponent = () => {
   const [snackBarTitle, setSnackBarTitle] = useState<string>("");
   const [snackBarColor, setSnackBarColor] = useState<SnackBarColor>("success");
 
+  // const editPatientBody = {
+  //   schedule: [
+  //     {
+  //       time: "",
+  //       dayOfWeek: "",
+  //       _id: "",
+  //     },
+  //   ],
+  //   filterInfo: {
+  //     id: "",
+  //     used: 0,
+  //     isFinished: false,
+  //   },
+  // };
+
   useEffect(() => {
     patientAPI
       .getPatients()
