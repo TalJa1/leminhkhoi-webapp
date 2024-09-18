@@ -26,7 +26,7 @@ import {
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { TransitionProps } from "@mui/material/transitions";
 import CloseIcon from "@mui/icons-material/Close";
-import { FilterInfo, SnackBarColor } from "../../services/typeProps";
+import { FilterInfo, Patient, SnackBarColor } from "../../services/typeProps";
 import SearchIcon from "@mui/icons-material/Search";
 import NotiAlert from "../NotiAlert";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -35,6 +35,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { useNavigate } from "react-router-dom";
 import ProgressingButton from "../ProgressingButton";
 import filterAPI from "../../apis/filterAPI";
+import patientAPI from "../../apis/patientAPI";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -87,6 +88,18 @@ const DoctorFilterManagement = () => {
       .getFilters()
       .then((res) => {
         setFilterData(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  useEffect(() => {
+    patientAPI
+      .getPatients()
+      .then((res) => {
+        const patients: Patient = res.data.data;
+        // const filterData = patients
       })
       .catch((err) => {
         console.log(err);

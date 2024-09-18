@@ -559,7 +559,7 @@ const DoctorManagementComponent = () => {
                                       ...prev.schedule,
                                       {
                                         time: "00:00",
-                                        dayOfWeek: day,
+                                        dayOfWeek: day.toLowerCase(),
                                         _id: "",
                                       },
                                     ],
