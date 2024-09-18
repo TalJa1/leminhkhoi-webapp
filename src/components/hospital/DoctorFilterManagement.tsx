@@ -75,6 +75,7 @@ const DoctorFilterManagement = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackBarTitle, setSnackBarTitle] = useState<string>("");
   const [snackBarColor, setSnackBarColor] = useState<SnackBarColor>("success");
+  const [listPatient, setListPatient] = useState<Patient[]>([]);
 
   // const editFilterBody = {
   //   used: 0,
@@ -98,8 +99,8 @@ const DoctorFilterManagement = () => {
     patientAPI
       .getPatients()
       .then((res) => {
-        const patients: Patient = res.data.data;
-        // const filterData = patients
+        const patients: Patient[] = res.data.data;
+        setListPatient(patients);
       })
       .catch((err) => {
         console.log(err);
@@ -432,7 +433,9 @@ const DoctorFilterManagement = () => {
                   <TableCell sx={{ color: "white" }}>Age</TableCell>
                   <TableCell sx={{ color: "white" }}>Phone</TableCell>
                   {isModify && (
-                    <TableCell sx={{ color: "white" }}>Action</TableCell>
+                    <TableCell sx={{ color: "white", textAlign: "center" }}>
+                      Action
+                    </TableCell>
                   )}
                 </TableRow>
               </TableHead>
@@ -444,7 +447,7 @@ const DoctorFilterManagement = () => {
                     <TableCell>{patient.age}</TableCell>
                     <TableCell>{patient.phone}</TableCell>
                     {isModify && (
-                      <TableCell>
+                      <TableCell sx={{ textAlign: "center" }}>
                         <Button
                           variant="contained"
                           color="error"
