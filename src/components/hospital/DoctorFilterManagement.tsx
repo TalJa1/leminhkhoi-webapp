@@ -22,6 +22,7 @@ import {
   AccordionSummary,
   AccordionDetails,
   TextField,
+  Autocomplete,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { TransitionProps } from "@mui/material/transitions";
@@ -75,6 +76,7 @@ const DoctorFilterManagement = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackBarTitle, setSnackBarTitle] = useState<string>("");
   const [snackBarColor, setSnackBarColor] = useState<SnackBarColor>("success");
+  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const [listPatient, setListPatient] = useState<Patient[]>([]);
 
   // const editFilterBody = {
@@ -196,6 +198,16 @@ const DoctorFilterManagement = () => {
       ...prev,
       forPatient: prev.forPatient.filter((patient) => patient.id !== patientId),
     }));
+  };
+
+  const handleAddPatient = () => {
+    if (selectedPatient) {
+      setSelectedFilter((prev) => ({
+        ...prev,
+        forPatient: [...prev.forPatient, selectedPatient],
+      }));
+      setSelectedPatient(null);
+    }
   };
 
   return (
@@ -421,6 +433,34 @@ const DoctorFilterManagement = () => {
           <Typography variant="h6" sx={{ marginTop: 2, textAlign: "center" }}>
             List of Patients
           </Typography>
+          {isModify && (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginBottom: 2,
+              }}
+            >
+              <Autocomplete
+                options={listPatient}
+                getOptionLabel={(option) => option.name}
+                value={selectedPatient}
+                onChange={(event, newValue) => setSelectedPatient(newValue)}
+                renderInput={(params) => (
+                  <TextField {...params} label="Select Patient" />
+                )}
+                sx={{ width: 300, marginRight: 2 }}
+              />
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleAddPatient}
+              >
+                Add
+              </Button>
+            </Box>
+          )}
           <TableContainer
             component={Paper}
             sx={{ width: "80%", margin: "0 auto" }}
