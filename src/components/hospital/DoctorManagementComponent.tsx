@@ -100,6 +100,9 @@ const DoctorManagementComponent = () => {
   const [options, setOptions] = useState<FilterInfo[]>([]);
 
   // const editPatientBody = {
+  // name: "",
+  // age: 0,
+  // phone: "",
   //   schedule: [
   //     {
   //       time: "",
@@ -404,7 +407,9 @@ const DoctorManagementComponent = () => {
                           options={options}
                           getOptionLabel={(option) => option.id}
                           value={userDialog.filterInfo}
-                          isOptionEqualToValue={(option, value) => option.id === value.id}
+                          isOptionEqualToValue={(option, value) =>
+                            option.id === value.id
+                          }
                           onChange={(event, newValue) => {
                             setUserDialog((prev) => ({
                               ...prev,
