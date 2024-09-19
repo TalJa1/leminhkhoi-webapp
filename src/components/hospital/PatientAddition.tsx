@@ -126,7 +126,7 @@ const PatientAddition: React.FC = () => {
       .then((res) => {
         console.log("Add Patient Response:", res.data);
         setLoading(false);
-        // navigate(-1);
+        navigate("/management");
       })
       .catch((err) => {
         console.error(err);
