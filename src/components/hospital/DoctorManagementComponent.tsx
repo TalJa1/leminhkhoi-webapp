@@ -99,7 +99,7 @@ const DoctorManagementComponent = () => {
   const [snackBarColor, setSnackBarColor] = useState<SnackBarColor>("success");
   const [options, setOptions] = useState<FilterInfo[]>([]);
 
-  useEffect(() => {
+  const fetchPatients = () => {
     patientAPI
       .getPatients()
       .then((res) => {
@@ -108,6 +108,10 @@ const DoctorManagementComponent = () => {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  useEffect(() => {
+    fetchPatients();
   }, []);
 
   const handleClickOpen = (id: string) => {
@@ -141,6 +145,7 @@ const DoctorManagementComponent = () => {
         setSnackBarColor("success");
         setSnackbarOpen(true);
         setIsModify(false);
+        fetchPatients();
         setOpen(false);
       })
       .catch((err) => {
