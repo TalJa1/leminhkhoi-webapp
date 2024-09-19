@@ -12,9 +12,10 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import userAPI from "../apis/userAPI";
-import { Account } from "../services/typeProps";
+import { Account, SnackBarColor } from "../services/typeProps";
 import { Autocomplete } from "@mui/material";
 import { roles } from "../data/appData";
+import NotiAlert from "../components/NotiAlert";
 
 function Copyright(props: any) {
   return (
@@ -210,6 +211,11 @@ function SignUp({ switchToSignIn }: { switchToSignIn: () => void }) {
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [roleError, setRoleError] = useState("");
+  const [notiOpen, setNotiOpen] = useState(false);
+  const [notiContent, setNotiContent] = useState<{
+    title: string;
+    color: SnackBarColor;
+  }>({ title: "", color: "success" });
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -225,15 +231,20 @@ function SignUp({ switchToSignIn }: { switchToSignIn: () => void }) {
     }
   };
 
-  const handleConfirmPasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleConfirmPasswordChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setConfirmPassword(event.target.value);
     if (confirmPasswordError) {
       setConfirmPasswordError("");
     }
   };
 
-  const handleRoleChange = (event: React.ChangeEvent<{}>, value: string | null) => {
-    setRole(value);
+  const handleRoleChange = (
+    event: React.ChangeEvent<{}>,
+    value: string | null
+  ) => {
+    setRole(value?.toLocaleLowerCase() || null);
     if (roleError) {
       setRoleError("");
     }
@@ -271,10 +282,36 @@ function SignUp({ switchToSignIn }: { switchToSignIn: () => void }) {
       setRoleError("Please select a role");
     }
 
-    if (isEmailValid && isPasswordValid && isConfirmPasswordValid && isRoleValid) {
-      // Handle form submission
-      console.log("Form submitted", { email, password, role });
+    if (
+      isEmailValid &&
+      isPasswordValid &&
+      isConfirmPasswordValid &&
+      isRoleValid
+    ) {
+      userAPI
+        .createUser({ email, password, role })
+        .then((res) => {
+          console.log("Response data:", res.data);
+
+          if (res.data.status === "success") {
+            setNotiContent({
+              title: "User created successfully!",
+              color: "success",
+            });
+            setNotiOpen(true);
+            switchToSignIn();
+          }
+        })
+        .catch((err) => {
+          console.log("err", err);
+          setNotiContent({ title: "Error creating user", color: "error" });
+          setNotiOpen(true);
+        });
     }
+  };
+
+  const handleNotiClose = () => {
+    setNotiOpen(false);
   };
 
   return (
@@ -370,6 +407,12 @@ function SignUp({ switchToSignIn }: { switchToSignIn: () => void }) {
         </Grid>
         <Copyright sx={{ mt: 5 }} />
       </Box>
+      <NotiAlert
+        open={notiOpen}
+        handleClose={handleNotiClose}
+        color={notiContent.color}
+        title={notiContent.title}
+      />
     </Box>
   );
 }

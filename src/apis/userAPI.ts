@@ -5,6 +5,10 @@ const userAPI = {
     const url = "/users";
     return await axiosClient.get(url);
   },
+  createUser: async (data: any) => {
+    const url = "/users";
+    return await axiosClient.post(url, data);
+  },
 };
 
 export default userAPI;

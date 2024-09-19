@@ -22,12 +22,14 @@ import {
   Box,
   InputBase,
   Chip,
+  Autocomplete,
+  TextField,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { daysOfWeek } from "../../data/appData";
 import { TransitionProps } from "@mui/material/transitions";
 import CloseIcon from "@mui/icons-material/Close";
-import { Patient, SnackBarColor } from "../../services/typeProps";
+import { FilterInfo, Patient, SnackBarColor } from "../../services/typeProps";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -39,6 +41,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import NotiAlert from "../NotiAlert";
 import { useNavigate } from "react-router-dom";
 import patientAPI from "../../apis/patientAPI";
+import filterAPI from "../../apis/filterAPI";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -94,8 +97,9 @@ const DoctorManagementComponent = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackBarTitle, setSnackBarTitle] = useState<string>("");
   const [snackBarColor, setSnackBarColor] = useState<SnackBarColor>("success");
+  const [options, setOptions] = useState<FilterInfo[]>([]);
 
-  useEffect(() => {
+  const fetchPatients = () => {
     patientAPI
       .getPatients()
       .then((res) => {
@@ -104,6 +108,10 @@ const DoctorManagementComponent = () => {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  useEffect(() => {
+    fetchPatients();
   }, []);
 
   const handleClickOpen = (id: string) => {
@@ -120,12 +128,33 @@ const DoctorManagementComponent = () => {
   };
 
   const handleSave = () => {
-    setSnackBarTitle("Save successfully");
-    setSnackBarColor("success");
-    setSnackbarOpen(true);
+    const editPatientBody = {
+      name: userDialog.name,
+      age: userDialog.age,
+      phone: userDialog.phone,
+      schedule: userDialog.schedule.map(({ _id, ...rest }) => rest),
+      filterInfo: {
+        id: userDialog.filterInfo.id,
+      },
+    };
 
-    setIsModify(false);
-    setOpen(false);
+    patientAPI
+      .editPatient(editPatientBody, parseInt(userDialog.id))
+      .then((res) => {
+        setSnackBarTitle("Save successfully");
+        setSnackBarColor("success");
+        setSnackbarOpen(true);
+        setIsModify(false);
+        fetchPatients();
+        setOpen(false);
+      })
+      .catch((err) => {
+        setSnackBarTitle("Save failed");
+        setSnackBarColor("error");
+        setSnackbarOpen(true);
+        setIsModify(false);
+        setOpen(false);
+      });
   };
 
   const handleCloseSnackbar = () => {
@@ -148,11 +177,33 @@ const DoctorManagementComponent = () => {
       )
     : [];
 
-  console.log("filteredPatients", filteredPatients);
+  // console.log("filteredPatients", filteredPatients);
 
   const capitalizeString = (str: string) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
+
+  useEffect(() => {
+    filterAPI
+      .getFilters()
+      .then((res) => {
+        const getData: FilterInfo[] = res.data.data;
+        const filterData = getData.filter((v) => v.isFinished !== true);
+
+        setOptions(filterData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const handleInputChange =
+    (field: keyof Patient) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      setUserDialog((prev) => ({
+        ...prev,
+        [field]: event.target.value,
+      }));
+    };
 
   return (
     <React.Fragment>
@@ -291,22 +342,49 @@ const DoctorManagementComponent = () => {
               />
             </Grid>
             <Grid item xs={12} md={3} lg={3}>
-              <ListItemText
-                primary={<Typography>Name</Typography>}
-                secondary={<Typography>{userDialog.name}</Typography>}
-              />
+              {isModify ? (
+                <TextField
+                  label="Name"
+                  value={userDialog.name}
+                  onChange={handleInputChange("name")}
+                  fullWidth
+                />
+              ) : (
+                <ListItemText
+                  primary={<Typography>Name</Typography>}
+                  secondary={<Typography>{userDialog.name}</Typography>}
+                />
+              )}
             </Grid>
             <Grid item xs={12} md={3} lg={3}>
-              <ListItemText
-                primary={<Typography>Age</Typography>}
-                secondary={<Typography>{userDialog.age}</Typography>}
-              />
+              {isModify ? (
+                <TextField
+                  label="Age"
+                  value={userDialog.age}
+                  onChange={handleInputChange("age")}
+                  fullWidth
+                />
+              ) : (
+                <ListItemText
+                  primary={<Typography>Age</Typography>}
+                  secondary={<Typography>{userDialog.age}</Typography>}
+                />
+              )}
             </Grid>
             <Grid item xs={12} md={3} lg={3}>
-              <ListItemText
-                primary={<Typography>Phone</Typography>}
-                secondary={<Typography>{userDialog.phone}</Typography>}
-              />
+              {isModify ? (
+                <TextField
+                  label="Phone"
+                  value={userDialog.phone}
+                  onChange={handleInputChange("phone")}
+                  fullWidth
+                />
+              ) : (
+                <ListItemText
+                  primary={<Typography>Phone</Typography>}
+                  secondary={<Typography>{userDialog.phone}</Typography>}
+                />
+              )}
             </Grid>
           </Grid>
           <Divider />
@@ -368,12 +446,41 @@ const DoctorManagementComponent = () => {
                 <Paper sx={{ padding: 2 }}>
                   <Grid container spacing={2} sx={{ textAlign: "center" }}>
                     <Grid item xs={4}>
-                      <ListItemText
-                        primary={<Typography>Filter ID</Typography>}
-                        secondary={
-                          <Typography>{userDialog.filterInfo.id}</Typography>
-                        }
-                      />
+                      {isModify ? (
+                        <Autocomplete
+                          options={options}
+                          getOptionLabel={(option) => option.id}
+                          value={userDialog.filterInfo}
+                          isOptionEqualToValue={(option, value) =>
+                            option.id === value.id
+                          }
+                          onChange={(event, newValue) => {
+                            setUserDialog((prev) => ({
+                              ...prev,
+                              filterInfo: {
+                                ...prev.filterInfo, // Preserve existing filterInfo fields
+                                id: newValue?.id || "", // Update with newValue fields
+                                description: newValue?.description || "",
+                                _id: newValue?._id || "", // Assuming newValue also has _id
+                                used: newValue?.used || 0,
+                                isFinished: newValue?.isFinished || false,
+                                forPatient: newValue?.forPatient || [],
+                                __v: newValue?.__v || 0,
+                              },
+                            }));
+                          }}
+                          renderInput={(params) => (
+                            <TextField {...params} label="Filter ID" />
+                          )}
+                        />
+                      ) : (
+                        <ListItemText
+                          primary={<Typography>Filter ID</Typography>}
+                          secondary={
+                            <Typography>{userDialog.filterInfo.id}</Typography>
+                          }
+                        />
+                      )}
                     </Grid>
                     <Grid item xs={4}>
                       <ListItemText
@@ -457,7 +564,7 @@ const DoctorManagementComponent = () => {
                                       ...prev.schedule,
                                       {
                                         time: "00:00",
-                                        dayOfWeek: day,
+                                        dayOfWeek: day.toLowerCase(),
                                         _id: "",
                                       },
                                     ],

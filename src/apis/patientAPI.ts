@@ -9,6 +9,10 @@ const patientAPI = {
     const url = "/newpatient";
     return await axiosClient.post(url, data);
   },
+  editPatient: async (data: any, patientId: number) => {
+    const url = `/patient/${patientId}`;
+    return await axiosClient.post(url, data);
+  },
 };
 
 export default patientAPI;

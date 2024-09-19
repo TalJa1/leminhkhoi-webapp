@@ -22,11 +22,12 @@ import {
   AccordionSummary,
   AccordionDetails,
   TextField,
+  Autocomplete,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { TransitionProps } from "@mui/material/transitions";
 import CloseIcon from "@mui/icons-material/Close";
-import { FilterInfo, SnackBarColor } from "../../services/typeProps";
+import { FilterInfo, Patient, SnackBarColor } from "../../services/typeProps";
 import SearchIcon from "@mui/icons-material/Search";
 import NotiAlert from "../NotiAlert";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -35,6 +36,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { useNavigate } from "react-router-dom";
 import ProgressingButton from "../ProgressingButton";
 import filterAPI from "../../apis/filterAPI";
+import patientAPI from "../../apis/patientAPI";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -74,12 +76,33 @@ const DoctorFilterManagement = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackBarTitle, setSnackBarTitle] = useState<string>("");
   const [snackBarColor, setSnackBarColor] = useState<SnackBarColor>("success");
+  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
+  const [listPatient, setListPatient] = useState<Patient[]>([]);
+
+  // const editFilterBody = {
+  //   used: 0,
+  //   description: "",
+  //   isFinished: false,
+  //   forPatient: [""], // string as patient id
+  // };
 
   useEffect(() => {
     filterAPI
       .getFilters()
       .then((res) => {
         setFilterData(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  useEffect(() => {
+    patientAPI
+      .getPatients()
+      .then((res) => {
+        const patients: Patient[] = res.data.data;
+        setListPatient(patients);
       })
       .catch((err) => {
         console.log(err);
@@ -168,10 +191,23 @@ const DoctorFilterManagement = () => {
         setLoading(false);
         setSnackbarOpen(true);
       });
+  };
 
-    // setTimeout(() => {
-    //   setLoading(false);
-    // }, 2000);
+  const handleCancelClick = (patientId: string) => {
+    setSelectedFilter((prev) => ({
+      ...prev,
+      forPatient: prev.forPatient.filter((patient) => patient.id !== patientId),
+    }));
+  };
+
+  const handleAddPatient = () => {
+    if (selectedPatient) {
+      setSelectedFilter((prev) => ({
+        ...prev,
+        forPatient: [...prev.forPatient, selectedPatient],
+      }));
+      setSelectedPatient(null);
+    }
   };
 
   return (
@@ -397,6 +433,34 @@ const DoctorFilterManagement = () => {
           <Typography variant="h6" sx={{ marginTop: 2, textAlign: "center" }}>
             List of Patients
           </Typography>
+          {isModify && (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginBottom: 2,
+              }}
+            >
+              <Autocomplete
+                options={listPatient}
+                getOptionLabel={(option) => option.name}
+                value={selectedPatient}
+                onChange={(event, newValue) => setSelectedPatient(newValue)}
+                renderInput={(params) => (
+                  <TextField {...params} label="Select Patient" />
+                )}
+                sx={{ width: 300, marginRight: 2 }}
+              />
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleAddPatient}
+              >
+                Add
+              </Button>
+            </Box>
+          )}
           <TableContainer
             component={Paper}
             sx={{ width: "80%", margin: "0 auto" }}
@@ -408,6 +472,11 @@ const DoctorFilterManagement = () => {
                   <TableCell sx={{ color: "white" }}>Name</TableCell>
                   <TableCell sx={{ color: "white" }}>Age</TableCell>
                   <TableCell sx={{ color: "white" }}>Phone</TableCell>
+                  {isModify && (
+                    <TableCell sx={{ color: "white", textAlign: "center" }}>
+                      Action
+                    </TableCell>
+                  )}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -417,6 +486,17 @@ const DoctorFilterManagement = () => {
                     <TableCell>{patient.name}</TableCell>
                     <TableCell>{patient.age}</TableCell>
                     <TableCell>{patient.phone}</TableCell>
+                    {isModify && (
+                      <TableCell sx={{ textAlign: "center" }}>
+                        <Button
+                          variant="contained"
+                          color="error"
+                          onClick={() => handleCancelClick(patient.id)}
+                        >
+                          Remove
+                        </Button>
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))}
               </TableBody>
