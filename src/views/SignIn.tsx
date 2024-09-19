@@ -37,12 +37,26 @@ function Copyright(props: any) {
 
 const defaultTheme = createTheme();
 
-function SignIn({ switchToSignUp }: { switchToSignUp: () => void }) {
+export default function Auth() {
+  const [isSignIn, setIsSignIn] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [role, setRole] = useState<string | null>(null);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [roleError, setRoleError] = useState("");
+  const [notiOpen, setNotiOpen] = useState(false);
+  const [notiContent, setNotiContent] = useState<{
+    title: string;
+    color: SnackBarColor;
+  }>({ title: "", color: "success" });
+
   const navigate = useNavigate();
+
+  const switchToSignUp = () => setIsSignIn(false);
+  const switchToSignIn = () => setIsSignIn(true);
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -55,6 +69,25 @@ function SignIn({ switchToSignUp }: { switchToSignUp: () => void }) {
     setPassword(event.target.value);
     if (passwordError) {
       setPasswordError("");
+    }
+  };
+
+  const handleConfirmPasswordChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setConfirmPassword(event.target.value);
+    if (confirmPasswordError) {
+      setConfirmPasswordError("");
+    }
+  };
+
+  const handleRoleChange = (
+    event: React.ChangeEvent<{}>,
+    value: string | null
+  ) => {
+    setRole(value?.toLocaleLowerCase() || null);
+    if (roleError) {
+      setRoleError("");
     }
   };
 
@@ -79,7 +112,7 @@ function SignIn({ switchToSignUp }: { switchToSignUp: () => void }) {
     return password.length >= 6;
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSignInSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const isEmailValid = validateEmail(email);
     const isPasswordValid = validatePassword(password);
@@ -133,133 +166,7 @@ function SignIn({ switchToSignUp }: { switchToSignUp: () => void }) {
     }
   };
 
-  return (
-    <Box
-      sx={{
-        my: 8,
-        mx: 4,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-        <LockOutlinedIcon />
-      </Avatar>
-      <Typography component="h1" variant="h5">
-        Sign in
-      </Typography>
-      <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="email"
-          label="Email Address"
-          name="email"
-          autoComplete="email"
-          autoFocus
-          value={email}
-          onChange={handleEmailChange}
-          onBlur={handleEmailBlur}
-          error={!!emailError}
-          helperText={emailError}
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="password"
-          label="Password"
-          type="password"
-          id="password"
-          autoComplete="current-password"
-          value={password}
-          onChange={handlePasswordChange}
-          onBlur={handlePasswordBlur}
-          error={!!passwordError}
-          helperText={passwordError}
-        />
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-        >
-          Sign In
-        </Button>
-        <Grid container>
-          <Grid item xs></Grid>
-          <Grid item>
-            <Link href="#" variant="body2" onClick={switchToSignUp}>
-              {"Don't have an account? Sign Up"}
-            </Link>
-          </Grid>
-        </Grid>
-        <Copyright sx={{ mt: 5 }} />
-      </Box>
-    </Box>
-  );
-}
-
-function SignUp({ switchToSignIn }: { switchToSignIn: () => void }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [role, setRole] = useState<string | null>(null);
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [confirmPasswordError, setConfirmPasswordError] = useState("");
-  const [roleError, setRoleError] = useState("");
-  const [notiOpen, setNotiOpen] = useState(false);
-  const [notiContent, setNotiContent] = useState<{
-    title: string;
-    color: SnackBarColor;
-  }>({ title: "", color: "success" });
-
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
-    if (emailError) {
-      setEmailError("");
-    }
-  };
-
-  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
-    if (passwordError) {
-      setPasswordError("");
-    }
-  };
-
-  const handleConfirmPasswordChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setConfirmPassword(event.target.value);
-    if (confirmPasswordError) {
-      setConfirmPasswordError("");
-    }
-  };
-
-  const handleRoleChange = (
-    event: React.ChangeEvent<{}>,
-    value: string | null
-  ) => {
-    setRole(value?.toLocaleLowerCase() || null);
-    if (roleError) {
-      setRoleError("");
-    }
-  };
-
-  const validateEmail = (email: string) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(String(email).toLowerCase());
-  };
-
-  const validatePassword = (password: string) => {
-    return password.length >= 6;
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSignUpSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const isEmailValid = validateEmail(email);
     const isPasswordValid = validatePassword(password);
@@ -291,16 +198,12 @@ function SignUp({ switchToSignIn }: { switchToSignIn: () => void }) {
       userAPI
         .createUser({ email, password, role })
         .then((res) => {
-          console.log("Response data:", res.data);
-
-          if (res.data.status === "success") {
-            setNotiContent({
-              title: "User created successfully!",
-              color: "success",
-            });
-            setNotiOpen(true);
-            switchToSignIn();
-          }
+          setNotiContent({
+            title: "User created successfully!",
+            color: "success",
+          });
+          setNotiOpen(true);
+          switchToSignIn();
         })
         .catch((err) => {
           console.log("err", err);
@@ -313,115 +216,6 @@ function SignUp({ switchToSignIn }: { switchToSignIn: () => void }) {
   const handleNotiClose = () => {
     setNotiOpen(false);
   };
-
-  return (
-    <Box
-      sx={{
-        my: 8,
-        mx: 4,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-        <LockOutlinedIcon />
-      </Avatar>
-      <Typography component="h1" variant="h5">
-        Sign Up
-      </Typography>
-      <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="email"
-          label="Email Address"
-          name="email"
-          autoComplete="email"
-          autoFocus
-          value={email}
-          onChange={handleEmailChange}
-          error={!!emailError}
-          helperText={emailError}
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="password"
-          label="Password"
-          type="password"
-          id="password"
-          autoComplete="current-password"
-          value={password}
-          onChange={handlePasswordChange}
-          error={!!passwordError}
-          helperText={passwordError}
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="confirmPassword"
-          label="Confirm Password"
-          type="password"
-          id="confirmPassword"
-          value={confirmPassword}
-          onChange={handleConfirmPasswordChange}
-          error={!!confirmPasswordError}
-          helperText={confirmPasswordError}
-        />
-        <Autocomplete
-          options={roles}
-          getOptionLabel={(option) => option}
-          fullWidth
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Role"
-              margin="normal"
-              required
-              error={!!roleError}
-              helperText={roleError}
-            />
-          )}
-          value={role}
-          onChange={handleRoleChange}
-        />
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-        >
-          Create new account
-        </Button>
-        <Grid container>
-          <Grid item xs></Grid>
-          <Grid item>
-            <Link href="#" variant="body2" onClick={switchToSignIn}>
-              {"Already have an account? Sign In"}
-            </Link>
-          </Grid>
-        </Grid>
-        <Copyright sx={{ mt: 5 }} />
-      </Box>
-      <NotiAlert
-        open={notiOpen}
-        handleClose={handleNotiClose}
-        color={notiContent.color}
-        title={notiContent.title}
-      />
-    </Box>
-  );
-}
-
-export default function Auth() {
-  const [isSignIn, setIsSignIn] = useState(true);
-
-  const switchToSignUp = () => setIsSignIn(false);
-  const switchToSignIn = () => setIsSignIn(true);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -445,12 +239,184 @@ export default function Auth() {
         />
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           {isSignIn ? (
-            <SignIn switchToSignUp={switchToSignUp} />
+            <Box
+              sx={{
+                my: 8,
+                mx: 4,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                <LockOutlinedIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                Sign in
+              </Typography>
+              <Box
+                component="form"
+                noValidate
+                onSubmit={handleSignInSubmit}
+                sx={{ mt: 1 }}
+              >
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                  value={email}
+                  onChange={handleEmailChange}
+                  onBlur={handleEmailBlur}
+                  error={!!emailError}
+                  helperText={emailError}
+                />
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={handlePasswordChange}
+                  onBlur={handlePasswordBlur}
+                  error={!!passwordError}
+                  helperText={passwordError}
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Sign In
+                </Button>
+                <Grid container>
+                  <Grid item xs></Grid>
+                  <Grid item>
+                    <Link href="#" variant="body2" onClick={switchToSignUp}>
+                      {"Don't have an account? Sign Up"}
+                    </Link>
+                  </Grid>
+                </Grid>
+                <Copyright sx={{ mt: 5 }} />
+              </Box>
+            </Box>
           ) : (
-            <SignUp switchToSignIn={switchToSignIn} />
+            <Box
+              sx={{
+                my: 8,
+                mx: 4,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                <LockOutlinedIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                Sign Up
+              </Typography>
+              <Box
+                component="form"
+                noValidate
+                onSubmit={handleSignUpSubmit}
+                sx={{ mt: 1 }}
+              >
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                  value={email}
+                  onChange={handleEmailChange}
+                  error={!!emailError}
+                  helperText={emailError}
+                />
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={handlePasswordChange}
+                  error={!!passwordError}
+                  helperText={passwordError}
+                />
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="confirmPassword"
+                  label="Confirm Password"
+                  type="password"
+                  id="confirmPassword"
+                  value={confirmPassword}
+                  onChange={handleConfirmPasswordChange}
+                  error={!!confirmPasswordError}
+                  helperText={confirmPasswordError}
+                />
+                <Autocomplete
+                  options={roles}
+                  getOptionLabel={(option) => option}
+                  fullWidth
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Role"
+                      margin="normal"
+                      required
+                      error={!!roleError}
+                      helperText={roleError}
+                    />
+                  )}
+                  value={role}
+                  onChange={handleRoleChange}
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Create new account
+                </Button>
+                <Grid container>
+                  <Grid item xs></Grid>
+                  <Grid item>
+                    <Link href="#" variant="body2" onClick={switchToSignIn}>
+                      {"Already have an account? Sign In"}
+                    </Link>
+                  </Grid>
+                </Grid>
+                <Copyright sx={{ mt: 5 }} />
+              </Box>
+            </Box>
           )}
         </Grid>
       </Grid>
+      <NotiAlert
+        open={notiOpen}
+        handleClose={handleNotiClose}
+        color={notiContent.color}
+        title={notiContent.title}
+      />
     </ThemeProvider>
   );
 }
