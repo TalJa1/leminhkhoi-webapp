@@ -79,14 +79,7 @@ const DoctorFilterManagement = () => {
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const [listPatient, setListPatient] = useState<Patient[]>([]);
 
-  // const editFilterBody = {
-  //   used: 0,
-  //   description: "",
-  //   isFinished: false,
-  //   forPatient: [""], // string as patient id
-  // };
-
-  useEffect(() => {
+  const fetchFilterData = () => {
     filterAPI
       .getFilters()
       .then((res) => {
@@ -95,6 +88,10 @@ const DoctorFilterManagement = () => {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  useEffect(() => {
+    fetchFilterData();
   }, []);
 
   useEffect(() => {
@@ -123,12 +120,29 @@ const DoctorFilterManagement = () => {
   };
 
   const handleSave = () => {
-    setSnackBarTitle("Save successfully");
-    setSnackBarColor("success");
-    setSnackbarOpen(true);
+    const editFilterBody = {
+      used: selectedFilter.used,
+      description: selectedFilter.description,
+      isFinished: selectedFilter.isFinished,
+      forPatient: selectedFilter.forPatient.map((patient) => patient.id),
+    };
 
-    setIsModify(false);
-    setOpen(false);
+    filterAPI
+      .editFilter(selectedFilter.id, editFilterBody)
+      .then(() => {
+        setSnackBarTitle("Save successfully");
+        setSnackBarColor("success");
+        setSnackbarOpen(true);
+        setIsModify(false);
+        fetchFilterData();
+        setOpen(false);
+      })
+      .catch(() => {
+        setSnackBarTitle("Save failed");
+        setSnackBarColor("error");
+        setSnackbarOpen(true);
+        setIsModify(false);
+      });
   };
 
   const handleCloseSnackbar = () => {
