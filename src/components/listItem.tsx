@@ -23,17 +23,17 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Management" />
     </ListItemButton>
-    <ListItemButton component={Link} to="/filtermanagement">
-      <ListItemIcon>
-        <VaccinesIcon />
-      </ListItemIcon>
-      <ListItemText primary="Filter Management" />
-    </ListItemButton>
     <ListItemButton component={Link} to="/usermanagement">
       <ListItemIcon>
         <ContactPageIcon color="disabled" />
       </ListItemIcon>
       <ListItemText primary="User Management" />
+    </ListItemButton>
+    <ListItemButton component={Link} to="/filtermanagement">
+      <ListItemIcon>
+        <VaccinesIcon />
+      </ListItemIcon>
+      <ListItemText primary="Filter Management" />
     </ListItemButton>
     <ListItemButton component={Link} to="/login">
       <ListItemIcon>
