@@ -37,6 +37,7 @@ import { useNavigate } from "react-router-dom";
 import ProgressingButton from "../ProgressingButton";
 import filterAPI from "../../apis/filterAPI";
 import patientAPI from "../../apis/patientAPI";
+import QRCode from "react-qr-code";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -444,6 +445,21 @@ const DoctorFilterManagement = () => {
               )}
             </AccordionDetails>
           </Accordion>
+          <Box
+            style={{
+              height: "auto",
+              margin: "0 auto",
+              maxWidth: 100,
+              width: "100%",
+            }}
+          >
+            <QRCode
+              size={256}
+              style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+              value={`{filterId: ${selectedFilter.id}, used: ${selectedFilter.used}}`}
+              viewBox={`0 0 256 256`}
+            />
+          </Box>
           <Typography variant="h6" sx={{ marginTop: 2, textAlign: "center" }}>
             List of Patients
           </Typography>
