@@ -133,15 +133,17 @@ const DoctorManagementComponent = () => {
     setOpen(false);
   };
 
-  const handleLinkAccount = () => {
+    const handleLinkAccount = () => {
     userAPI
       .getUsers()
       .then((res) => {
-        const getLastUser: Account = res.data.data[res.data.data.length - 1];
-        if (getLastUser) {
+        const getUser: Account[] = res.data.data;
+        const userRolePatient = getUser.filter((user) => user.role === 'patient');
+        const getLastUserRolePatient = userRolePatient[userRolePatient.length - 1];
+        if (getLastUserRolePatient) {
           const linkAccountBody = {
             patientID: userDialog.id,
-            accountID: getLastUser.accountID,
+            accountID: getLastUserRolePatient.accountID,
           };
           userAPI
             .linkAccount(linkAccountBody)
