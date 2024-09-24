@@ -130,8 +130,6 @@ export default function Auth() {
       userAPI
         .getUsers()
         .then((res) => {
-          console.log("Response data:", res.data);
-
           if (!Array.isArray(res.data.data)) {
             throw new Error("Response data is not an array");
           }
@@ -141,9 +139,6 @@ export default function Auth() {
             (account) =>
               account.email === email && account.password === password
           );
-
-          console.log("account", account);
-
           if (!account) {
             setEmailError("Invalid email or password");
             setPasswordError("Invalid email or password");

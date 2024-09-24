@@ -35,9 +35,16 @@ const PatientHomeComponent = () => {
   });
 
   useEffect(() => {
-    patientAPI.getPatientByID(1).then((response) => {
-      setPatientData(response.data.data);
-    });
+    const userDataString = sessionStorage.getItem("userData");
+    const userData = userDataString ? JSON.parse(userDataString) : null;
+    const accountID = userData ? userData.accountID : null;
+
+    if (accountID) {
+      patientAPI.getPatientByID(accountID).then((response) => {
+        console.log(response.data.data);
+        setPatientData(response.data.data);
+      });
+    }
   }, []);
 
   return (
