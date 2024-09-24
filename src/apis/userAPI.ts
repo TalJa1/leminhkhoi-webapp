@@ -9,6 +9,10 @@ const userAPI = {
     const url = "/users";
     return await axiosClient.post(url, data);
   },
+  linkAccount: async (data: any) => {
+    const url = " /linkacctofilter";
+    return await axiosClient.post(url, data);
+  },
 };
 
 export default userAPI;
