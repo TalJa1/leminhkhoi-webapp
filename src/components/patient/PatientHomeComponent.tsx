@@ -1,14 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Grid, Typography, Paper } from "@mui/material";
-import { patientInfo } from "../../data/appData";
 import {
   dayOfWeekMap,
   formatDate,
   getDateOfCurrentWeek,
 } from "../../services/datetimeService";
-import { DayOfWeek } from "../../services/typeProps";
+import { DayOfWeek, Patient } from "../../services/typeProps";
+import patientAPI from "../../apis/patientAPI";
 
 const PatientHomeComponent = () => {
+  const [patientData, setPatientData] = useState<Patient>({
+    _id: "",
+    id: "",
+    name: "",
+    age: 0,
+    phone: "",
+    schedule: [
+      {
+        time: "",
+        dayOfWeek: "",
+        _id: "",
+      },
+    ],
+    __v: 0,
+    filterInfo: {
+      _id: "",
+      id: "",
+      used: 0,
+      description: "",
+      isFinished: false,
+      forPatient: [],
+      __v: 0,
+    },
+  });
+
+  useEffect(() => {
+    patientAPI.getPatientByID(1).then((response) => {
+      setPatientData(response.data.data);
+    });
+  }, []);
+
   return (
     <Box sx={{ flexGrow: 1, padding: 4, backgroundColor: "#f5f5f5" }}>
       <Grid container spacing={4}>
@@ -19,13 +50,13 @@ const PatientHomeComponent = () => {
               Patient Information
             </Typography>
             <Typography variant="body1" sx={{ marginBottom: 1 }}>
-              <strong>Name:</strong> {patientInfo.name}
+              <strong>Name:</strong> {patientData.name}
             </Typography>
             <Typography variant="body1" sx={{ marginBottom: 1 }}>
-              <strong>Age:</strong> {patientInfo.age}
+              <strong>Age:</strong> {patientData.age}
             </Typography>
             <Typography variant="body1" sx={{ marginBottom: 1 }}>
-              <strong>Phone:</strong> {patientInfo.phone}
+              <strong>Phone:</strong> {patientData.phone}
             </Typography>
           </Paper>
         </Grid>
@@ -36,9 +67,9 @@ const PatientHomeComponent = () => {
             <Typography variant="h5" gutterBottom>
               Schedule (Weekly)
             </Typography>
-            {patientInfo.schedule.map((entry, index) => {
+            {patientData.schedule.map((entry, index) => {
               const dayNumber =
-                dayOfWeekMap[entry.dayofWeek.toLowerCase() as DayOfWeek];
+                dayOfWeekMap[entry.dayOfWeek.toLowerCase() as DayOfWeek];
               const date = getDateOfCurrentWeek(dayNumber);
               const formattedDate = formatDate(date);
 
@@ -46,8 +77,8 @@ const PatientHomeComponent = () => {
                 <Box key={index} sx={{ marginBottom: 2 }}>
                   <Typography variant="body1">
                     <strong>
-                      {entry.dayofWeek.charAt(0).toUpperCase() +
-                        entry.dayofWeek.slice(1)}
+                      {entry.dayOfWeek.charAt(0).toUpperCase() +
+                        entry.dayOfWeek.slice(1)}
                       :
                     </strong>{" "}
                     {entry.time} ({formattedDate})
