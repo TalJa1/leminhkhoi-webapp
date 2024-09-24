@@ -16,6 +16,7 @@ import {
 import React, { useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import userAPI from "../../apis/userAPI";
+import { Account } from "../../services/typeProps";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -68,8 +69,12 @@ function UserManagementComponent() {
     userAPI
       .getUsers()
       .then((res) => {
-        setUserData(res.data.data);
-        setFilteredData(res.data.data); // Initialize filtered data
+        const patientData: Account[] = res.data.data.filter(
+          (user: Account) => user.role === "patient"
+        );
+        
+        setUserData(patientData);
+        setFilteredData(patientData); // Initialize filtered data
       })
       .catch((err) => {
         console.log(err);
