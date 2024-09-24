@@ -6,6 +6,7 @@ import Management from "./views/hospital/Management";
 import FilterManagement from "./views/hospital/FilterManagement";
 import PatientAddition from "./components/hospital/PatientAddition";
 import FilterAddition from "./components/hospital/FilterAddition";
+import UserManagement from "./views/hospital/UserManagement";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/filtermanagement" element={<FilterManagement />} />
         <Route path="/patientaddition" element={<PatientAddition />} />
         <Route path="/filteraddition" element={<FilterAddition />} />
+        <Route path="/usermanagement" element={<UserManagement />} />
       </Routes>
     </BrowserRouter>
   );

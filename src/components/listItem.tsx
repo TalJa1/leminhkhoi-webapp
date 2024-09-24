@@ -6,6 +6,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import VaccinesIcon from "@mui/icons-material/Vaccines";
 import HomeWorkIcon from "@mui/icons-material/HomeWork";
 import MedicalInformationIcon from "@mui/icons-material/MedicalInformation";
+import ContactPageIcon from '@mui/icons-material/ContactPage';
 import { Link } from "react-router-dom";
 
 export const mainListItems = (
@@ -27,6 +28,12 @@ export const mainListItems = (
         <VaccinesIcon />
       </ListItemIcon>
       <ListItemText primary="Filter Management" />
+    </ListItemButton>
+    <ListItemButton component={Link} to="/usermanagement">
+      <ListItemIcon>
+        <ContactPageIcon color="disabled" />
+      </ListItemIcon>
+      <ListItemText primary="User Management" />
     </ListItemButton>
     <ListItemButton component={Link} to="/login">
       <ListItemIcon>
