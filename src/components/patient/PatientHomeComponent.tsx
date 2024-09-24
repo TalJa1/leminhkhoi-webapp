@@ -41,8 +41,36 @@ const PatientHomeComponent = () => {
 
     if (accountID) {
       patientAPI.getPatientByID(accountID).then((response) => {
-        console.log(response.data.data);
-        setPatientData(response.data.data);
+        const patientData: Patient = response.data.data;
+
+        if (patientData !== null) {
+          setPatientData(response.data.data);
+        } else {
+          setPatientData({
+            _id: "",
+            id: "",
+            name: "",
+            age: 0,
+            phone: "",
+            schedule: [
+              {
+                time: "",
+                dayOfWeek: "",
+                _id: "",
+              },
+            ],
+            __v: 0,
+            filterInfo: {
+              _id: "",
+              id: "",
+              used: 0,
+              description: "",
+              isFinished: false,
+              forPatient: [],
+              __v: 0,
+            },
+          });
+        }
       });
     }
   }, []);
