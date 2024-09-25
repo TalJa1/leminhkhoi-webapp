@@ -30,7 +30,6 @@ import { daysOfWeek } from "../../data/appData";
 import { TransitionProps } from "@mui/material/transitions";
 import CloseIcon from "@mui/icons-material/Close";
 import {
-  Account,
   FilterInfo,
   Patient,
   SnackBarColor,
@@ -47,7 +46,6 @@ import NotiAlert from "../NotiAlert";
 import { useNavigate } from "react-router-dom";
 import patientAPI from "../../apis/patientAPI";
 import filterAPI from "../../apis/filterAPI";
-import userAPI from "../../apis/userAPI";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -133,33 +131,6 @@ const DoctorManagementComponent = () => {
     setOpen(false);
   };
 
-    const handleLinkAccount = () => {
-    userAPI
-      .getUsers()
-      .then((res) => {
-        const getUser: Account[] = res.data.data;
-        const userRolePatient = getUser.filter((user) => user.role === 'patient');
-        const getLastUserRolePatient = userRolePatient[userRolePatient.length - 1];
-        if (getLastUserRolePatient) {
-          const linkAccountBody = {
-            patientID: userDialog.id,
-            accountID: getLastUserRolePatient.accountID,
-          };
-          userAPI
-            .linkAccount(linkAccountBody)
-            .then((res) => {
-              console.log("Link account successfully");
-            })
-            .catch((err) => {
-              console.log("Link account failed");
-            });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   const handleSave = () => {
     const editPatientBody = {
       name: userDialog.name,
@@ -174,7 +145,6 @@ const DoctorManagementComponent = () => {
     patientAPI
       .editPatient(editPatientBody, parseInt(userDialog.id))
       .then((res) => {
-        handleLinkAccount();
         setSnackBarTitle("Save successfully");
         setSnackBarColor("success");
         setSnackbarOpen(true);

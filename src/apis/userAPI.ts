@@ -10,7 +10,7 @@ const userAPI = {
     return await axiosClient.post(url, data);
   },
   linkAccount: async (data: any) => {
-    const url = " /linkacctofilter";
+    const url = "/linkacctofilter";
     return await axiosClient.post(url, data);
   },
 };
