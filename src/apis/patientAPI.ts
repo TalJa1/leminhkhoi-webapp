@@ -17,6 +17,10 @@ const patientAPI = {
     const url = `/patient/${patientId}`;
     return await axiosClient.get(url);
   },
+  getPatientByAccountID: async (accountID: number) => {
+    const url = `/patientbyaccid/${accountID}`;
+    return await axiosClient.get(url);
+  },
 };
 
 export default patientAPI;

@@ -40,7 +40,7 @@ const PatientHomeComponent = () => {
     const accountID = userData ? userData.accountID : null;
 
     if (accountID) {
-      patientAPI.getPatientByID(accountID).then((response) => {
+      patientAPI.getPatientByAccountID(accountID).then((response) => {
         const patientData: Patient = response.data.data;
 
         if (patientData !== null) {
