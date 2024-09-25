@@ -195,6 +195,7 @@ const DoctorFilterManagement = () => {
     filterAPI
       .createFilter()
       .then((res) => {
+        fetchFilterData();
         setSnackBarTitle("Add successfully");
         setSnackBarColor("success");
         setLoading(false);
