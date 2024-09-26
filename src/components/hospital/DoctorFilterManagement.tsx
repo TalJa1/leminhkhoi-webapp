@@ -37,6 +37,7 @@ import { useNavigate } from "react-router-dom";
 import ProgressingButton from "../ProgressingButton";
 import filterAPI from "../../apis/filterAPI";
 import patientAPI from "../../apis/patientAPI";
+import QRCode from "react-qr-code";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -79,14 +80,7 @@ const DoctorFilterManagement = () => {
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const [listPatient, setListPatient] = useState<Patient[]>([]);
 
-  // const editFilterBody = {
-  //   used: 0,
-  //   description: "",
-  //   isFinished: false,
-  //   forPatient: [""], // string as patient id
-  // };
-
-  useEffect(() => {
+  const fetchFilterData = () => {
     filterAPI
       .getFilters()
       .then((res) => {
@@ -95,6 +89,10 @@ const DoctorFilterManagement = () => {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  useEffect(() => {
+    fetchFilterData();
   }, []);
 
   useEffect(() => {
@@ -123,12 +121,29 @@ const DoctorFilterManagement = () => {
   };
 
   const handleSave = () => {
-    setSnackBarTitle("Save successfully");
-    setSnackBarColor("success");
-    setSnackbarOpen(true);
+    const editFilterBody = {
+      used: selectedFilter.used,
+      description: selectedFilter.description,
+      isFinished: selectedFilter.isFinished,
+      forPatient: selectedFilter.forPatient.map((patient) => patient.id),
+    };
 
-    setIsModify(false);
-    setOpen(false);
+    filterAPI
+      .editFilter(selectedFilter.id, editFilterBody)
+      .then(() => {
+        setSnackBarTitle("Save successfully");
+        setSnackBarColor("success");
+        setSnackbarOpen(true);
+        setIsModify(false);
+        fetchFilterData();
+        setOpen(false);
+      })
+      .catch(() => {
+        setSnackBarTitle("Save failed");
+        setSnackBarColor("error");
+        setSnackbarOpen(true);
+        setIsModify(false);
+      });
   };
 
   const handleCloseSnackbar = () => {
@@ -180,6 +195,7 @@ const DoctorFilterManagement = () => {
     filterAPI
       .createFilter()
       .then((res) => {
+        fetchFilterData();
         setSnackBarTitle("Add successfully");
         setSnackBarColor("success");
         setLoading(false);
@@ -430,6 +446,21 @@ const DoctorFilterManagement = () => {
               )}
             </AccordionDetails>
           </Accordion>
+          <Box
+            style={{
+              height: "auto",
+              margin: "0 auto",
+              maxWidth: 100,
+              width: "100%",
+            }}
+          >
+            <QRCode
+              size={256}
+              style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+              value={`{filterId: ${selectedFilter.id}, used: ${selectedFilter.used}}`}
+              viewBox={`0 0 256 256`}
+            />
+          </Box>
           <Typography variant="h6" sx={{ marginTop: 2, textAlign: "center" }}>
             List of Patients
           </Typography>

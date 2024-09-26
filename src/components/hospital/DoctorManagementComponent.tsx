@@ -29,7 +29,11 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import { daysOfWeek } from "../../data/appData";
 import { TransitionProps } from "@mui/material/transitions";
 import CloseIcon from "@mui/icons-material/Close";
-import { FilterInfo, Patient, SnackBarColor } from "../../services/typeProps";
+import {
+  FilterInfo,
+  Patient,
+  SnackBarColor,
+} from "../../services/typeProps";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";

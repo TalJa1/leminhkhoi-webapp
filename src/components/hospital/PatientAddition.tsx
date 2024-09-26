@@ -6,7 +6,7 @@ import {
   Typography,
   Autocomplete,
 } from "@mui/material";
-import { Patient } from "../../services/typeProps";
+import { Account, Patient, SnackBarColor } from "../../services/typeProps";
 import { daysOfWeek } from "../../data/appData";
 import { LocalizationProvider, MobileTimePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
@@ -16,6 +16,8 @@ import { useNavigate } from "react-router-dom";
 import ProgressingButton from "../ProgressingButton";
 import filterAPI from "../../apis/filterAPI";
 import patientAPI from "../../apis/patientAPI";
+import userAPI from "../../apis/userAPI";
+import NotiAlert from "../NotiAlert";
 
 const PatientAddition: React.FC = () => {
   const navigate = useNavigate();
@@ -39,6 +41,9 @@ const PatientAddition: React.FC = () => {
       __v: 0,
     },
   });
+  const [snackBarTitle, setSnackBarTitle] = useState<string>("");
+  const [snackBarColor, setSnackBarColor] = useState<SnackBarColor>("success");
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   useEffect(() => {
     filterAPI
@@ -53,6 +58,10 @@ const PatientAddition: React.FC = () => {
         console.error(err);
       });
   }, []);
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -107,6 +116,36 @@ const PatientAddition: React.FC = () => {
     );
   };
 
+  const handleLinkAccount = (patientID: string) => {
+    userAPI
+      .getUsers()
+      .then((res) => {
+        const getUser: Account[] = res.data.data;
+        const userRolePatient = getUser.filter(
+          (user) => user.role === "patient"
+        );
+        const getLastUserRolePatient =
+          userRolePatient[userRolePatient.length - 1];
+        if (getLastUserRolePatient) {
+          const linkAccountBody = {
+            patientID: patientID,
+            accountID: getLastUserRolePatient.accountID,
+          };
+          userAPI
+            .linkAccount(linkAccountBody)
+            .then((res) => {
+              console.log("Link account successfully");
+            })
+            .catch((err) => {
+              console.log("Link account failed");
+            });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const handleAddPatient = () => {
     if (!isFormValid()) return;
     setLoading(true);
@@ -124,13 +163,19 @@ const PatientAddition: React.FC = () => {
     patientAPI
       .createPatient(addPatient)
       .then((res) => {
-        console.log("Add Patient Response:", res.data);
+        handleLinkAccount(res.data.data.id);
+        setSnackBarTitle("Create successfully");
+        setSnackBarColor("success");
         setLoading(false);
+        setSnackbarOpen(true);
         navigate("/management");
       })
       .catch((err) => {
         console.error(err);
+        setSnackBarTitle("Create failed");
+        setSnackBarColor("error");
         setLoading(false);
+        setSnackbarOpen(true);
       });
   };
 
@@ -144,6 +189,12 @@ const PatientAddition: React.FC = () => {
         backgroundColor: "#f0f0f0",
       }}
     >
+      <NotiAlert
+        open={snackbarOpen}
+        handleClose={handleCloseSnackbar}
+        color={snackBarColor}
+        title={snackBarTitle}
+      />
       <Box
         component="form"
         onSubmit={handleSubmit}
