@@ -29,11 +29,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import { daysOfWeek } from "../../data/appData";
 import { TransitionProps } from "@mui/material/transitions";
 import CloseIcon from "@mui/icons-material/Close";
-import {
-  FilterInfo,
-  Patient,
-  SnackBarColor,
-} from "../../services/typeProps";
+import { FilterInfo, Patient, SnackBarColor } from "../../services/typeProps";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -119,6 +115,8 @@ const DoctorManagementComponent = () => {
   }, []);
 
   const handleClickOpen = (id: string) => {
+    console.log("id", id);
+
     const patient = listPatientData.find((p) => p.id === id);
     if (patient) {
       setUserDialog(patient);
@@ -446,71 +444,77 @@ const DoctorManagementComponent = () => {
                   </Table>
                 </TableContainer>
               </Grid>
-              <Grid item xs={12} md={12}>
-                <Paper sx={{ padding: 2 }}>
-                  <Grid container spacing={2} sx={{ textAlign: "center" }}>
-                    <Grid item xs={4}>
-                      {isModify ? (
-                        <Autocomplete
-                          options={options}
-                          getOptionLabel={(option) => option.id}
-                          value={userDialog.filterInfo}
-                          isOptionEqualToValue={(option, value) =>
-                            option.id === value.id
-                          }
-                          onChange={(event, newValue) => {
-                            setUserDialog((prev) => ({
-                              ...prev,
-                              filterInfo: {
-                                ...prev.filterInfo, // Preserve existing filterInfo fields
-                                id: newValue?.id || "", // Update with newValue fields
-                                description: newValue?.description || "",
-                                _id: newValue?._id || "", // Assuming newValue also has _id
-                                used: newValue?.used || 0,
-                                isFinished: newValue?.isFinished || false,
-                                forPatient: newValue?.forPatient || [],
-                                __v: newValue?.__v || 0,
-                              },
-                            }));
-                          }}
-                          renderInput={(params) => (
-                            <TextField {...params} label="Filter ID" />
-                          )}
-                        />
-                      ) : (
-                        <ListItemText
-                          primary={<Typography>Filter ID</Typography>}
-                          secondary={
-                            <Typography>{userDialog.filterInfo.id}</Typography>
-                          }
-                        />
-                      )}
-                    </Grid>
-                    <Grid item xs={4}>
-                      <ListItemText
-                        primary={<Typography>Used</Typography>}
-                        secondary={
-                          <Typography>{userDialog.filterInfo.used}</Typography>
-                        }
-                      />
-                    </Grid>
-                    <Grid item xs={4}>
-                      <ListItemText
-                        primary={<Typography>Is Finished</Typography>}
-                        secondary={
-                          <>
-                            {userDialog.filterInfo.isFinished ? (
-                              <CheckCircleIcon color="primary" />
-                            ) : (
-                              <CancelIcon color="error" />
+              {userDialog.filterInfo && (
+                <Grid item xs={12} md={12}>
+                  <Paper sx={{ padding: 2 }}>
+                    <Grid container spacing={2} sx={{ textAlign: "center" }}>
+                      <Grid item xs={4}>
+                        {isModify ? (
+                          <Autocomplete
+                            options={options}
+                            getOptionLabel={(option) => option.id}
+                            value={userDialog.filterInfo}
+                            isOptionEqualToValue={(option, value) =>
+                              option.id === value.id
+                            }
+                            onChange={(event, newValue) => {
+                              setUserDialog((prev) => ({
+                                ...prev,
+                                filterInfo: {
+                                  ...prev.filterInfo, // Preserve existing filterInfo fields
+                                  id: newValue?.id || "", // Update with newValue fields
+                                  description: newValue?.description || "",
+                                  _id: newValue?._id || "", // Assuming newValue also has _id
+                                  used: newValue?.used || 0,
+                                  isFinished: newValue?.isFinished || false,
+                                  forPatient: newValue?.forPatient || [],
+                                  __v: newValue?.__v || 0,
+                                },
+                              }));
+                            }}
+                            renderInput={(params) => (
+                              <TextField {...params} label="Filter ID" />
                             )}
-                          </>
-                        }
-                      />
+                          />
+                        ) : (
+                          <ListItemText
+                            primary={<Typography>Filter ID</Typography>}
+                            secondary={
+                              <Typography>
+                                {userDialog.filterInfo.id}
+                              </Typography>
+                            }
+                          />
+                        )}
+                      </Grid>
+                      <Grid item xs={4}>
+                        <ListItemText
+                          primary={<Typography>Used</Typography>}
+                          secondary={
+                            <Typography>
+                              {userDialog.filterInfo.used}
+                            </Typography>
+                          }
+                        />
+                      </Grid>
+                      <Grid item xs={4}>
+                        <ListItemText
+                          primary={<Typography>Is Finished</Typography>}
+                          secondary={
+                            <>
+                              {userDialog.filterInfo.isFinished ? (
+                                <CheckCircleIcon color="primary" />
+                              ) : (
+                                <CancelIcon color="error" />
+                              )}
+                            </>
+                          }
+                        />
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </Paper>
-              </Grid>
+                  </Paper>
+                </Grid>
+              )}
             </Grid>
             <Grid item container xs={12} md={6} lg={6}>
               {isModify && (
